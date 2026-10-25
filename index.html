@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -6,755 +5,96 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0d0d0d">
 <title>MÍRÍNOR – Die Schattenschlucht</title>
-
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Cinzel:wght@400;700;900&family=MedievalSharp&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
-
 <style>
-*{box-sizing:border-box}
-html{min-height:100%;-webkit-text-size-adjust:100%}
-body{
- font-family:Cinzel,serif;background:#0d0d0d;color:#eee;
- overflow-x:hidden;user-select:none;-webkit-user-select:none;
- margin:0;min-height:100vh;min-height:100dvh
-}
-button{touch-action:manipulation}
-.gothic-title{font-family:UnifrakturMaguntia,cursive}
-.ancient-font{font-family:MedievalSharp,cursive}
-.parchment-bg{
- background:#f4e8c1;
- background-image:radial-gradient(#d6c390 1px,transparent 0),radial-gradient(#b89f62 1px,#f4e8c1 0);
- background-size:20px 20px;background-position:0 0,10px 10px;
- box-shadow:inset 0 0 40px #4a341680,0 10px 25px #000c;
- border:4px solid #4a3416
-}
-.btn-gothic{
- background:linear-gradient(#4a3416,#291a08);color:#f4e8c1;
- border:1px solid #8c6834;text-shadow:1px 1px 2px #000;
- box-shadow:0 4px 6px #0006,inset 0 1px 0 #ffffff33;
- transition:background .2s
-}
-.btn-gothic:hover{background:linear-gradient(#5c4322,#36230c)}
-.btn-gothic:disabled{opacity:.5;cursor:not-allowed}
-.modal-panel{
- max-height:92vh;max-height:92dvh;overflow-y:auto;
- overscroll-behavior:contain;-webkit-overflow-scrolling:touch
-}
-.player-choice{
- cursor:pointer;border:2px solid #8c6834;background:#21180f;color:#f4e8c1;
- border-radius:10px;padding:12px 8px;text-align:center;transition:.2s;
- min-height:64px;touch-action:manipulation
-}
-.player-choice.selected{
- border-color:#ffd700;background:#594019;
- box-shadow:0 0 12px #d4af3766
-}
-.player-dot{
- display:inline-block;width:13px;height:13px;border-radius:50%;
- border:2px solid #fff;margin-right:5px;vertical-align:middle
-}
-.player-panel{
- padding:7px 9px;border:1px solid #65451e;border-radius:8px;
- background:#17120d;min-width:0
-}
-.player-panel.active{
- border-color:#ffd700;box-shadow:0 0 8px #d4af3766;background:#302313
-}
-#board-wrapper{
- touch-action:pan-y;position:relative;isolation:isolate;
- width:100%;aspect-ratio:4/3;max-height:75vh;max-height:75dvh
-}
-#gameBoard{display:block;width:100%;height:100%}
-#puzzle-options button{min-height:46px}
-button:focus-visible{outline:3px solid #ffd700;outline-offset:2px}
-.hidden{display:none!important}
-
-@media(max-width:640px){
- body{min-height:100vh;min-height:100dvh}
- header{padding:7px 5px;gap:3px}
- main{
-  justify-content:flex-start!important;
-  padding:6px!important;
-  flex:1 0 auto
- }
- #board-wrapper{
-  width:100%;aspect-ratio:3/4!important;
-  height:auto;max-height:55vh;max-height:55dvh;
-  flex-shrink:0
- }
- #legend-badge{
-  font-size:9px;padding:4px;gap:4px;
-  max-width:68%;line-height:1.4
- }
- #position-display{font-size:11px;line-height:1.4}
- #player-panels{gap:5px;margin-top:6px}
- .player-panel{padding:5px;font-size:10px}
- .player-dot{width:10px;height:10px;margin-right:3px}
- #dice-result{
-  width:44px;height:44px;flex-shrink:0;font-size:21px
- }
- #btn-roll{min-height:50px;font-size:15px}
- #btn-new-game{min-height:42px}
- .modal-panel{
-  max-height:88vh;max-height:88dvh;
-  padding:15px!important
- }
- .player-choice{min-height:66px;padding:8px 3px}
- #puzzle-options button,#btn-start-game,#puzzle-continue{min-height:46px}
- footer{margin-top:8px;padding:10px 5px}
- footer button{padding:5px}
-}
-@media(max-width:380px){
- #board-wrapper{max-height:49vh;max-height:49dvh}
- #legend-badge{font-size:8px;max-width:65%;gap:3px}
- #position-display{font-size:10px}
- #player-panels{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-@media(orientation:landscape) and (max-height:500px){
- #board-wrapper{
-  aspect-ratio:4/3!important;width:auto;
-  height:58vh;max-height:58vh
- }
- main{justify-content:flex-start!important}
- .modal-panel{max-height:85vh}
-}
+*{box-sizing:border-box}html{min-height:100%;-webkit-text-size-adjust:100%}body{font-family:Cinzel,serif;background:#0d0d0d;color:#eee;overflow-x:hidden;user-select:none;-webkit-user-select:none;margin:0;min-height:100vh;min-height:100dvh}button{touch-action:manipulation}.gothic-title{font-family:UnifrakturMaguntia,cursive}.ancient-font{font-family:MedievalSharp,cursive}.parchment-bg{background:#f4e8c1;background-image:radial-gradient(#d6c390 1px,transparent 0),radial-gradient(#b89f62 1px,#f4e8c1 0);background-size:20px 20px;background-position:0 0,10px 10px;box-shadow:inset 0 0 40px #4a341680,0 10px 25px #000c;border:4px solid #4a3416}.btn-gothic{background:linear-gradient(#4a3416,#291a08);color:#f4e8c1;border:1px solid #8c6834;text-shadow:1px 1px 2px #000;box-shadow:0 4px 6px #0006,inset 0 1px 0 #ffffff33;transition:background .2s}.btn-gothic:hover{background:linear-gradient(#5c4322,#36230c)}.btn-gothic:disabled{opacity:.5;cursor:not-allowed}.modal-panel{max-height:92vh;max-height:92dvh;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}.player-choice{cursor:pointer;border:2px solid #8c6834;background:#21180f;color:#f4e8c1;border-radius:10px;padding:12px 8px;text-align:center;transition:.2s;min-height:64px;touch-action:manipulation}.player-choice.selected{border-color:#ffd700;background:#594019;box-shadow:0 0 12px #d4af3766}.player-dot{display:inline-block;width:13px;height:13px;border-radius:50%;border:2px solid #fff;margin-right:5px;vertical-align:middle}.player-panel{padding:7px 9px;border:1px solid #65451e;border-radius:8px;background:#17120d;min-width:0}.player-panel.active{border-color:#ffd700;box-shadow:0 0 8px #d4af3766;background:#302313}#board-wrapper{touch-action:pan-y;position:relative;isolation:isolate;width:100%;aspect-ratio:4/3;max-height:75vh;max-height:75dvh}#gameBoard{display:block;width:100%;height:100%}#puzzle-options button{min-height:46px}button:focus-visible{outline:3px solid #ffd700;outline-offset:2px}.hidden{display:none!important}@media(max-width:640px){body{min-height:100vh;min-height:100dvh}header{padding:7px 5px;gap:3px}main{justify-content:flex-start!important;padding:6px!important;flex:1 0 auto}#board-wrapper{width:100%;aspect-ratio:3/4!important;height:auto;max-height:55vh;max-height:55dvh;flex-shrink:0}#legend-badge{font-size:9px;padding:4px;gap:4px;max-width:68%;line-height:1.4}#position-display{font-size:11px;line-height:1.4}#player-panels{gap:5px;margin-top:6px}.player-panel{padding:5px;font-size:10px}.player-dot{width:10px;height:10px;margin-right:3px}#dice-result{width:44px;height:44px;flex-shrink:0;font-size:21px}#btn-roll{min-height:50px;font-size:15px}#btn-new-game{min-height:42px}.modal-panel{max-height:88vh;max-height:88dvh;padding:15px!important}.player-choice{min-height:66px;padding:8px 3px}#puzzle-options button,#btn-start-game,#puzzle-continue{min-height:46px}footer{margin-top:8px;padding:10px 5px}footer button{padding:5px}}@media(max-width:380px){#board-wrapper{max-height:49vh;max-height:49dvh}#legend-badge{font-size:8px;max-width:65%;gap:3px}#position-display{font-size:10px}#player-panels{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(orientation:landscape) and (max-height:500px){#board-wrapper{aspect-ratio:4/3!important;width:auto;height:58vh;max-height:58vh}main{justify-content:flex-start!important}.modal-panel{max-height:85vh}}
 </style>
 </head>
-
 <body class="min-h-screen flex flex-col justify-between">
-
-<header class="w-full bg-zinc-950/90 border-b border-amber-900/40 px-3 py-2 text-center shadow-lg z-20 flex flex-col sm:flex-row justify-between items-center gap-1">
- <div class="text-xs text-amber-200/80">Nach dem gleichnamigen Roman von <span class="text-amber-400 font-semibold">Marc Blankenhagen</span></div>
- <div class="text-xs text-amber-400/90 font-bold uppercase tracking-wider">Blankenhagen Spieleentwicklung</div>
-</header>
-
+<header class="w-full bg-zinc-950/90 border-b border-amber-900/40 px-3 py-2 text-center shadow-lg z-20 flex flex-col sm:flex-row justify-between items-center gap-1"><div class="text-xs text-amber-200/80">Nach dem gleichnamigen Roman von <span class="text-amber-400 font-semibold">Marc Blankenhagen</span></div><div class="text-xs text-amber-400/90 font-bold uppercase tracking-wider">Blankenhagen Spieleentwicklung</div></header>
 <main class="relative flex-1 flex flex-col items-center justify-center p-1 sm:p-4 w-full max-w-6xl mx-auto">
-
-<div id="board-wrapper" class="relative w-full rounded-lg overflow-hidden border-2 border-amber-900/60 shadow-2xl bg-stone-900">
- <canvas id="gameBoard"></canvas>
- <div class="absolute inset-0 pointer-events-none rounded-lg" style="box-shadow:inset 0 0 70px #0008"></div>
-
- <div id="legend-badge" class="absolute top-2 left-2 bg-stone-950/90 border border-amber-800/50 rounded-md p-2 text-amber-100 text-[10px] sm:text-xs flex flex-wrap gap-2 items-center max-w-[85%] z-10">
-  <span>🔄 Tausch</span><span>🛡️ Sicher</span><span>⚡ 3 Vor</span><span>🌑 5 Zurück</span><span>🔙 10 Zurück</span>
- </div>
-
- <div class="absolute top-2 right-2 bg-stone-950/90 border border-amber-700/60 rounded-md px-2 py-1.5 text-right z-10">
-  <div class="text-[9px] uppercase text-amber-500 font-bold tracking-widest">Am Zug</div>
-  <div id="position-display" class="text-xs sm:text-base font-black text-amber-200">Spieler 1 · Feld 1</div>
- </div>
-
- <button id="btn-zoom-reset" class="absolute bottom-2 right-2 z-10 bg-stone-900/90 border border-amber-800/60 text-amber-200 px-3 py-2 rounded text-xs" title="Ansicht neu zeichnen" aria-label="Ansicht neu zeichnen">
-  <i class="fa-solid fa-expand"></i>
- </button>
-</div>
-
+<div id="board-wrapper" class="relative w-full rounded-lg overflow-hidden border-2 border-amber-900/60 shadow-2xl bg-stone-900"><canvas id="gameBoard"></canvas><div class="absolute inset-0 pointer-events-none rounded-lg" style="box-shadow:inset 0 0 70px #0008"></div>
+<div id="legend-badge" class="absolute top-2 left-2 bg-stone-950/90 border border-amber-800/50 rounded-md p-2 text-amber-100 text-[10px] sm:text-xs flex flex-wrap gap-2 items-center max-w-[85%] z-10"><span>🔄 Tausch</span><span>🛡️ Sicher</span><span>⚡ 3 Vor</span><span>🌑 5 Zurück</span><span>🔙 10 Zurück</span></div>
+<div class="absolute top-2 right-2 bg-stone-950/90 border border-amber-700/60 rounded-md px-2 py-1.5 text-right z-10"><div class="text-[9px] uppercase text-amber-500 font-bold tracking-widest">Am Zug</div><div id="position-display" class="text-xs sm:text-base font-black text-amber-200">Spieler 1 · Start</div></div>
+<button id="btn-zoom-reset" class="absolute bottom-2 right-2 z-10 bg-stone-900/90 border border-amber-800/60 text-amber-200 px-3 py-2 rounded text-xs" title="Ansicht neu zeichnen" aria-label="Ansicht neu zeichnen"><i class="fa-solid fa-expand"></i></button></div>
 <div id="player-panels" class="w-full grid grid-cols-2 sm:grid-cols-4 gap-2 mt-2"></div>
-
-<div class="w-full mt-3 bg-stone-950/90 border border-amber-900/50 rounded-xl p-3 sm:p-4 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-3">
- <div class="flex items-center gap-3 w-full sm:w-auto min-w-0">
-  <div id="dice-result" class="w-12 h-12 rounded-lg bg-gradient-to-br from-amber-700 to-amber-950 border-2 border-amber-400/80 flex items-center justify-center text-2xl font-black text-amber-100">🎲</div>
-  <div class="min-w-0">
-   <div id="status-title" class="text-sm font-bold text-amber-300">Willkommen in MÍRÍNOR</div>
-   <div id="status-desc" class="text-xs text-stone-300 max-w-md">Wähle deine Spielerzahl und beginne dein Abenteuer.</div>
-  </div>
- </div>
- <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-  <button id="btn-new-game" class="btn-gothic px-4 py-2 rounded-lg text-xs font-bold">Neues Spiel</button>
-  <button id="btn-roll" class="btn-gothic px-6 py-3 rounded-lg font-bold text-base tracking-wider flex items-center justify-center gap-2 w-full sm:w-auto uppercase" disabled>
-   <i class="fa-solid fa-dice"></i> Würfeln
-  </button>
- </div>
-</div>
+<div class="w-full mt-3 bg-stone-950/90 border border-amber-900/50 rounded-xl p-3 sm:p-4 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-3"><div class="flex items-center gap-3 w-full sm:w-auto min-w-0"><div id="dice-result" class="w-12 h-12 rounded-lg bg-gradient-to-br from-amber-700 to-amber-950 border-2 border-amber-400/80 flex items-center justify-center text-2xl font-black text-amber-100">🎲</div><div class="min-w-0"><div id="status-title" class="text-sm font-bold text-amber-300">Willkommen in MÍRÍNOR</div><div id="status-desc" class="text-xs text-stone-300 max-w-md">Wähle deine Spielerzahl und beginne dein Abenteuer.</div></div></div><div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto"><button id="btn-new-game" class="btn-gothic px-4 py-2 rounded-lg text-xs font-bold">Neues Spiel</button><button id="btn-roll" class="btn-gothic px-6 py-3 rounded-lg font-bold text-base tracking-wider flex items-center justify-center gap-2 w-full sm:w-auto uppercase" disabled><i class="fa-solid fa-dice"></i> Würfeln</button></div></div>
 </main>
-
-<!-- Start und Spielerauswahl -->
-<div id="start-modal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-[70] flex items-center justify-center p-3">
- <div class="parchment-bg modal-panel max-w-md w-full rounded-lg p-5 sm:p-7 text-stone-900">
-  <div class="text-center border-b-2 border-amber-900/40 pb-4">
-   <div class="gothic-title text-4xl sm:text-5xl text-amber-950">MÍRÍNOR</div>
-   <h2 class="text-sm font-bold tracking-widest text-amber-900">DIE SCHATTENSCHLUCHT</h2>
-   <p class="ancient-font text-sm mt-3">Ein gefährlicher Pfad. Uralte Rätsel. Ein geheimnisvolles Tor.</p>
-  </div>
-  <h3 class="text-center font-bold text-amber-950 mt-5 mb-3">Wie viele Abenteurer spielen?</h3>
-  <div id="player-count-options" class="grid grid-cols-4 gap-2">
-   <button class="player-choice selected" data-count="1"><div class="text-2xl">♟</div><div class="text-xs mt-1">1 Spieler</div></button>
-   <button class="player-choice" data-count="2"><div class="text-2xl">♟♟</div><div class="text-xs mt-1">2 Spieler</div></button>
-   <button class="player-choice" data-count="3"><div class="text-2xl">♟♟♟</div><div class="text-xs mt-1">3 Spieler</div></button>
-   <button class="player-choice" data-count="4"><div class="text-2xl">♟♟♟♟</div><div class="text-xs mt-1">4 Spieler</div></button>
-  </div>
-  <div class="mt-4 rounded p-3 ancient-font text-sm border border-amber-900/30">
-   <p><strong>Ziel:</strong> Erreiche Feld 70 als Erster.</p>
-   <p class="mt-1"><strong>Achtung:</strong> Falsche Antworten werfen dich 3 bis 7 Felder zurück.</p>
-   <p class="mt-1">Jeder Spieler würfelt abwechselnd. Die Spielfiguren haben unterschiedliche Farben.</p>
-  </div>
-  <button id="btn-start-game" class="btn-gothic w-full mt-5 py-3 rounded-lg font-bold tracking-wide">Abenteuer beginnen</button>
- </div>
-</div>
-
-<!-- Rätsel -->
-<div id="puzzle-modal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-3 hidden">
- <div class="parchment-bg modal-panel max-w-lg w-full rounded-lg p-5 sm:p-6 text-stone-900 shadow-2xl">
-  <div class="text-center border-b-2 border-amber-900/40 pb-3">
-   <span id="puzzle-category" class="text-xs uppercase tracking-widest text-amber-900 font-bold block">Prüfung der Schattenschlucht</span>
-   <h3 id="puzzle-title" class="gothic-title text-2xl sm:text-3xl text-amber-950 font-bold mt-1">Das alte Rätsel</h3>
-  </div>
-  <div id="puzzle-body" class="text-sm sm:text-base leading-relaxed ancient-font my-3"></div>
-  <div id="puzzle-options" class="flex flex-col gap-2"></div>
-  <div id="puzzle-feedback" class="hidden rounded border border-amber-900/40 p-3 text-sm ancient-font mt-3"></div>
-  <button id="puzzle-continue" class="btn-gothic px-4 py-3 rounded text-sm mt-3 w-full hidden">Weiterziehen</button>
- </div>
-</div>
-
-<!-- Regeln -->
-<div id="rules-modal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-3 hidden">
- <div class="parchment-bg modal-panel max-w-md w-full rounded-lg p-5 text-stone-900">
-  <h3 class="gothic-title text-2xl font-bold border-b border-amber-900/40 pb-2">Spielregeln</h3>
-  <div class="text-sm my-4 space-y-2 ancient-font leading-relaxed">
-   <p><strong>Ziel:</strong> Erreiche als Erster Feld 70.</p>
-   <p><strong>Spieler:</strong> Ein bis vier Spieler nehmen teil. Nach jedem Zug ist der nächste Spieler an der Reihe.</p>
-   <ul class="list-disc pl-5 space-y-1">
-    <li>🔄 Tausch: Du wechselst auf das verbundene Feld.</li>
-    <li>🛡️ Sicherer Ort: Schützt vor dem nächsten 5-Felder-Rückschritt.</li>
-    <li>⚡ 3 Vor: Du rückst drei Felder vor.</li>
-    <li>🌑 5 Zurück: Du gehst fünf Felder zurück, sofern du nicht geschützt bist.</li>
-    <li>🔙 10 Zurück: Du gehst zehn Felder zurück.</li>
-    <li>❌ Falsche Rätselantwort: drei bis sieben Felder zurück.</li>
-    <li>🧩 Richtige Antwort: je nach Rätsel ein Positionsvorteil.</li>
-    <li>🏆 Wer Feld 70 erreicht, gewinnt. Ein Wurf über das Ziel hinaus reicht ebenfalls.</li>
-   </ul>
-  </div>
-  <div class="text-right"><button id="btn-close-rules" class="btn-gothic px-4 py-2 rounded text-xs">Schließen</button></div>
- </div>
-</div>
-
-<!-- Impressum -->
-<div id="impressum-modal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-3 hidden">
- <div class="parchment-bg modal-panel max-w-md w-full rounded-lg p-5 text-stone-900">
-  <h3 class="gothic-title text-2xl font-bold border-b border-amber-900/40 pb-2">Impressum</h3>
-  <div class="text-sm my-4 space-y-2 ancient-font leading-relaxed">
-   <p class="font-bold text-amber-950">Blankenhagen Spieleentwicklung</p>
-   <p>Jörg Blankenhagen</p>
-   <p>Kanalstraße 31</p>
-   <p>73614 Schorndorf</p>
-   <p><strong>E-Mail:</strong> <a href="mailto:spieleentwicklung@freenet.de" class="text-amber-900 underline font-semibold">spieleentwicklung@freenet.de</a></p>
-   <hr class="border-amber-900/30 my-3">
-   <p class="italic text-xs">Nach dem gleichnamigen Roman von Marc Blankenhagen.</p>
-  </div>
-  <div class="text-right"><button id="btn-close-impressum" class="btn-gothic px-4 py-2 rounded text-xs">Schließen</button></div>
- </div>
-</div>
-
-<footer class="w-full bg-zinc-950 border-t border-amber-900/40 px-4 py-3 text-center z-20 flex flex-col gap-2">
- <p class="text-[11px] sm:text-xs text-amber-200/60 max-w-4xl mx-auto italic">Dieser Text/Dieses Bild/Dieses Video/… wurde unter Zuhilfenahme einer Künstlichen Intelligenz erstellt und von einem Menschen überprüft.</p>
- <div class="flex items-center justify-center gap-4 text-xs text-amber-400/80 font-medium pt-1">
-  <button id="btn-open-rules" class="hover:text-amber-200 underline"><i class="fa-solid fa-book-open"></i> Regeln</button>
-  <span>•</span>
-  <button id="btn-open-impressum" class="hover:text-amber-200 underline"><i class="fa-solid fa-circle-info"></i> Impressum</button>
- </div>
-</footer>
-
+<div id="start-modal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-[70] flex items-center justify-center p-3"><div class="parchment-bg modal-panel max-w-md w-full rounded-lg p-5 sm:p-7 text-stone-900"><div class="text-center border-b-2 border-amber-900/40 pb-4"><div class="gothic-title text-4xl sm:text-5xl text-amber-950">MÍRÍNOR</div><h2 class="text-sm font-bold tracking-widest text-amber-900">DIE SCHATTENSCHLUCHT</h2><p class="ancient-font text-sm mt-3">Ein gefährlicher Pfad. Uralte Rätsel. Ein geheimnisvolles Tor.</p></div><h3 class="text-center font-bold text-amber-950 mt-5 mb-3">Wie viele Abenteurer spielen?</h3><div id="player-count-options" class="grid grid-cols-3 sm:grid-cols-6 gap-2"><button class="player-choice" data-count="1"><div class="text-2xl">♟</div><div class="text-xs mt-1">1 Spieler</div></button><button class="player-choice" data-count="2"><div class="text-2xl">♟♟</div><div class="text-xs mt-1">2 Spieler</div></button><button class="player-choice selected" data-count="3"><div class="text-2xl">♟♟♟</div><div class="text-xs mt-1">3 Spieler</div></button><button class="player-choice" data-count="4"><div class="text-2xl">♟♟♟♟</div><div class="text-xs mt-1">4 Spieler</div></button><button class="player-choice" data-count="5"><div class="text-2xl">♟♟♟♟♟</div><div class="text-xs mt-1">5 Spieler</div></button><button class="player-choice" data-count="6"><div class="text-2xl">♟♟♟♟♟♟</div><div class="text-xs mt-1">6 Spieler</div></button></div><label class="flex items-center gap-2 mt-4 text-sm ancient-font"><input id="team-mode" type="checkbox" class="w-4 h-4"> Teammodus (2 gegen 2 oder 3 gegen 3)</label><div class="mt-4 rounded p-3 ancient-font text-sm border border-amber-900/30"><p><strong>Ziel:</strong> Erreiche Feld 70 mit einem exakten Wurf.</p><p class="mt-1"><strong>Sechs:</strong> Sechs Felder vor oder eine Figur ein Feld schubsen.</p><p class="mt-1">Der Jäger würfelt erneut, bis er jemanden überholt hat.</p></div><button id="btn-start-game" class="btn-gothic w-full mt-5 py-3 rounded-lg font-bold tracking-wide">Abenteuer beginnen</button></div></div>
+<div id="puzzle-modal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-3 hidden"><div class="parchment-bg modal-panel max-w-lg w-full rounded-lg p-5 sm:p-6 text-stone-900 shadow-2xl"><div class="text-center border-b-2 border-amber-900/40 pb-3"><span id="puzzle-category" class="text-xs uppercase tracking-widest text-amber-900 font-bold block">Prüfung der Schattenschlucht</span><h3 id="puzzle-title" class="gothic-title text-2xl sm:text-3xl text-amber-950 font-bold mt-1">Das alte Rätsel</h3></div><div id="puzzle-body" class="text-sm sm:text-base leading-relaxed ancient-font my-3"></div><div id="puzzle-options" class="flex flex-col gap-2"></div><div id="puzzle-feedback" class="hidden rounded border border-amber-900/40 p-3 text-sm ancient-font mt-3"></div><button id="puzzle-continue" class="btn-gothic px-4 py-3 rounded text-sm mt-3 w-full hidden">Weiterziehen</button></div></div>
+<div id="rules-modal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-3 hidden"><div class="parchment-bg modal-panel max-w-md w-full rounded-lg p-5 text-stone-900"><h3 class="gothic-title text-2xl font-bold border-b border-amber-900/40 pb-2">Spielregeln</h3><div class="text-sm my-4 space-y-2 ancient-font leading-relaxed"><p><strong>Ziel:</strong> Feld 70 muss mit einem exakten Wurf erreicht werden. Bei einem zu hohen Wurf bleibt die Figur stehen.</p><p><strong>Spieler:</strong> 2–6 Spieler; zusätzlich ist ein Einzelspiel möglich. Figuren starten vor Feld 1. Mehrere Figuren dürfen auf einem Feld stehen.</p><ul class="list-disc pl-5 space-y-1"><li><strong>Jagdgesetz:</strong> Wer hinten liegt, ist Jäger und würfelt weiter, bis er mindestens eine andere Figur überholt hat. Bei Gleichstand entscheidet die zuletzt überholte Figur.</li><li><strong>Die Sechs:</strong> Keine Zusatzrunde. Stattdessen entweder sechs Felder vorwärts (nur bei passendem Zielwurf) oder eine beliebige nicht geschützte Figur um ein Feld vor- oder zurückschubsen. Auch eigene Teamfiguren dürfen geschubst werden.</li><li><strong>Schutzfelder:</strong> Figuren auf 🛡️-Feldern sind vor Schubsen und Tausch geschützt.</li><li><strong>Tauschfelder:</strong> Auf einem Tauschfeld wird mit einem wählbaren gegnerischen Spieler getauscht, sofern dieser nicht auf einem Schutzfeld steht.</li><li>⚡ Sprint: drei Felder vorwärts.</li><li>🌑 Falle: fünf Felder zurück.</li><li>🔙 Felssturz: zehn Felder zurück.</li><li>❌ Falsche Rätselantwort: drei bis sieben Felder zurück.</li><li>🧩 Richtige Antworten bringen den im Rätsel angegebenen Vorteil.</li><li><strong>Teammodus:</strong> 2 gegen 2 oder 3 gegen 3; sobald ein Teammitglied Feld 70 exakt erreicht, gewinnt das Team.</li></ul></div><div class="text-right"><button id="btn-close-rules" class="btn-gothic px-4 py-2 rounded text-xs">Schließen</button></div></div></div>
+<div id="impressum-modal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-3 hidden"><div class="parchment-bg modal-panel max-w-md w-full rounded-lg p-5 text-stone-900"><h3 class="gothic-title text-2xl font-bold border-b border-amber-900/40 pb-2">Impressum</h3><div class="text-sm my-4 space-y-2 ancient-font leading-relaxed"><p class="font-bold text-amber-950">Blankenhagen Spieleentwicklung</p><p>Jörg Blankenhagen</p><p>Kanalstraße 31</p><p>73614 Schorndorf</p><p><strong>E-Mail:</strong> <a href="mailto:spieleentwicklung@freenet.de" class="text-amber-900 underline font-semibold">spieleentwicklung@freenet.de</a></p><hr class="border-amber-900/30 my-3"><p class="italic text-xs">Nach dem gleichnamigen Roman von Marc Blankenhagen.</p></div><div class="text-right"><button id="btn-close-impressum" class="btn-gothic px-4 py-2 rounded text-xs">Schließen</button></div></div></div>
+<footer class="w-full bg-zinc-950 border-t border-amber-900/40 px-4 py-3 text-center z-20 flex flex-col gap-2"><p class="text-[11px] sm:text-xs text-amber-200/60 max-w-4xl mx-auto italic">Dieser Text/Dieses Bild/Dieses Video/… wurde unter Zuhilfenahme einer Künstlichen Intelligenz erstellt und von einem Menschen überprüft.</p><div class="flex items-center justify-center gap-4 text-xs text-amber-400/80 font-medium pt-1"><button id="btn-open-rules" class="hover:text-amber-200 underline"><i class="fa-solid fa-book-open"></i> Regeln</button><span>•</span><button id="btn-open-impressum" class="hover:text-amber-200 underline"><i class="fa-solid fa-circle-info"></i> Impressum</button></div></footer>
 <script>
 "use strict";
-
-const COLORS=["#ffd700","#45b7ff","#ff6262","#69df83"];
-const PLAYER_NAMES=["Spieler 1","Spieler 2","Spieler 3","Spieler 4"];
-let players=[];
-let currentPlayerIndex=0;
-let selectedPlayerCount=1;
-let gameStarted=false;
-let gameOver=false;
-let isMoving=false;
-let eventTimer=null;
-let diceTimer=null;
-let synth,polySynth;
-
-const canvas=document.getElementById("gameBoard");
-const ctx=canvas.getContext("2d");
-const wrapper=document.getElementById("board-wrapper");
-const rollButton=document.getElementById("btn-roll");
-const modal=document.getElementById("puzzle-modal");
-const maxPosition=70;
-
+const COLORS=["#ffd700","#45b7ff","#ff6262","#69df83","#d38aff","#ff9b42"];
+const PLAYER_NAMES=["Spieler 1","Spieler 2","Spieler 3","Spieler 4","Spieler 5","Spieler 6"];
+let players=[],currentPlayerIndex=0,selectedPlayerCount=3,gameStarted=false,gameOver=false,isMoving=false,eventTimer=null,diceTimer=null,synth,polySynth,teamMode=false,lastOvertakenIndex=null,hunterIndex=0,turnStartPositions=[];
+const canvas=document.getElementById("gameBoard"),ctx=canvas.getContext("2d"),wrapper=document.getElementById("board-wrapper"),rollButton=document.getElementById("btn-roll"),modal=document.getElementById("puzzle-modal"),maxPosition=70;
 function currentPlayer(){return players[currentPlayerIndex]||null}
-
-function initAudio(){
- if(!window.Tone)return;
- try{
-  if(!synth){
-   synth=new Tone.Synth({
-    oscillator:{type:"triangle"},
-    envelope:{attack:.01,decay:.2,sustain:.1,release:.5}
-   }).toDestination();
-   polySynth=new Tone.PolySynth(Tone.Synth).toDestination();
-  }
- }catch(e){}
-}
-function startAudio(){
- try{
-  initAudio();
-  if(window.Tone&&Tone.context.state!=="running")Tone.start();
- }catch(e){}
-}
-function playStepSound(){
- try{startAudio();if(synth)synth.triggerAttackRelease("C3","8n")}catch(e){}
-}
-function playSpecialSound(){
- try{startAudio();if(polySynth)polySynth.triggerAttackRelease(["E4","G4","B4"],"4n")}catch(e){}
-}
-function playWinSound(){
- try{startAudio();if(polySynth)polySynth.triggerAttackRelease(["C4","E4","G4","C5"],"2n")}catch(e){}
-}
-
+function isShielded(p){return !!p&&p.position>0&&specialFields[p.position]?.type==="SAFE"}
+function teamOf(i){return i%2===0?0:1}
+function initAudio(){if(!window.Tone)return;try{if(!synth){synth=new Tone.Synth({oscillator:{type:"triangle"},envelope:{attack:.01,decay:.2,sustain:.1,release:.5}}).toDestination();polySynth=new Tone.PolySynth(Tone.Synth).toDestination()}}catch(e){}}
+function startAudio(){try{initAudio();if(window.Tone&&Tone.context.state!=="running")Tone.start()}catch(e){}}
+function playStepSound(){try{startAudio();if(synth)synth.triggerAttackRelease("C3","8n")}catch(e){}}
+function playSpecialSound(){try{startAudio();if(polySynth)polySynth.triggerAttackRelease(["E4","G4","B4"],"4n")}catch(e){}}
+function playWinSound(){try{startAudio();if(polySynth)polySynth.triggerAttackRelease(["C4","E4","G4","C5"],"2n")}catch(e){}}
 const specialFields={
- 5:{type:"SAFE",title:"Sicherer Ort",desc:"Ein geschützter Unterstand bewahrt dich vor Gefahren."},
- 8:{type:"SAFE",title:"Sicherer Ort",desc:"Ein uralter Schutzstein bewahrt dich vor Gefahren."},
- 21:{type:"SAFE",title:"Sicherer Ort",desc:"Zuflucht im Schatten der Kiefern."},
- 36:{type:"SAFE",title:"Sicherer Ort",desc:"Ein heiliger Schrein gewährt dir Rast."},
- 50:{type:"SAFE",title:"Sicherer Ort",desc:"Ein verlassener Wachturm bietet Schutz."},
- 64:{type:"SAFE",title:"Sicherer Ort",desc:"Das Plateau vor dem Final-Tor."},
- 18:{type:"SWAP",target:33,title:"Geheime Klamm",desc:"Ein Nebelpfad führt dich direkt auf Feld 33!"},
- 33:{type:"SWAP",target:18,title:"Schattenwirbel",desc:"Ein Windstoß wirbelt dich zurück auf Feld 18!"},
- 53:{type:"SWAP",target:59,title:"Adlerklippe",desc:"Ein mächtiger Rabenwind trägt dich zu Feld 59!"},
- 59:{type:"SWAP",target:53,title:"Felsrutsch",desc:"Du rutschst hinab zu Feld 53!"},
- 7:{type:"FORWARD3",title:"Aufwind",desc:"Ein magischer Wind hebt dich drei Felder nach vorn!"},
- 23:{type:"FORWARD3",title:"Geheimweg",desc:"Du entdeckst einen verborgenen Pfad."},
- 42:{type:"FORWARD3",title:"Günstiger Pfad",desc:"Ein schmaler Felsweg erspart dir einen Umweg."},
- 62:{type:"FORWARD3",title:"Elbenlicht",desc:"Ein Lichtschein weist dir den Weg."},
- 10:{type:"BACK5",title:"Schattensturz",desc:"Der brüchige Pfad gibt unter deinen Füßen nach!"},
- 30:{type:"BACK5",title:"Felssturz",desc:"Lose Felsen zwingen dich zum Rückzug!"},
- 68:{type:"BACK5",title:"Nebelfalle",desc:"Der dichte Nebel führt dich auf einen falschen Pfad!"},
- 28:{type:"BACK10",title:"Tiefe Schlucht",desc:"Du musst einen langen Umweg zurückgehen!"}
-};
-
+5:{type:"SAFE",title:"Sicherer Ort",desc:"Ein geschützter Unterstand bewahrt dich vor Gefahren."},8:{type:"SAFE",title:"Sicherer Ort",desc:"Ein uralter Schutzstein bewahrt dich vor Gefahren."},21:{type:"SAFE",title:"Sicherer Ort",desc:"Zuflucht im Schatten der Kiefern."},36:{type:"SAFE",title:"Sicherer Ort",desc:"Ein heiliger Schrein gewährt dir Rast."},50:{type:"SAFE",title:"Sicherer Ort",desc:"Ein verlassener Wachturm bietet Schutz."},64:{type:"SAFE",title:"Sicherer Ort",desc:"Das Plateau vor dem Final-Tor."},
+18:{type:"SWAP",title:"Geheime Klamm",desc:"Der Nebelpfad zwingt dich zum Tausch mit einem Gegner."},33:{type:"SWAP",title:"Schattenwirbel",desc:"Der Schattenwirbel verlangt einen Tausch mit einem Gegner."},53:{type:"SWAP",title:"Adlerklippe",desc:"Der Rabenwind verlangt einen Tausch mit einem Gegner."},59:{type:"SWAP",title:"Felsrutsch",desc:"Der Felsrutsch zwingt dich zum Tausch mit einem Gegner."},
+7:{type:"FORWARD3",title:"Aufwind",desc:"Ein magischer Wind hebt dich drei Felder nach vorn!"},23:{type:"FORWARD3",title:"Geheimweg",desc:"Du entdeckst einen verborgenen Pfad."},42:{type:"FORWARD3",title:"Günstiger Pfad",desc:"Ein schmaler Felsweg erspart dir einen Umweg."},62:{type:"FORWARD3",title:"Elbenlicht",desc:"Ein Lichtschein weist dir den Weg."},10:{type:"BACK5",title:"Schattensturz",desc:"Der brüchige Pfad gibt unter deinen Füßen nach!"},30:{type:"BACK5",title:"Felssturz",desc:"Lose Felsen zwingen dich zum Rückzug!"},68:{type:"BACK5",title:"Nebelfalle",desc:"Der dichte Nebel führt dich auf einen falschen Pfad!"},28:{type:"BACK10",title:"Tiefe Schlucht",desc:"Du musst einen langen Umweg zurückgehen!"}};
 const lorePuzzles=[
- {title:"Das Siegel von MÍRÍNOR",desc:"Vier Wächter besitzen jeweils zwei Schlüssel. Drei Schlüssel sind zerbrochen und ein weiterer ging verloren. Wie viele unversehrte Schlüssel bleiben?",options:[
-  {text:"3 Schlüssel",correct:false},{text:"4 Schlüssel",correct:false},{text:"5 Schlüssel",correct:true,move:2},{text:"6 Schlüssel",correct:false},{text:"7 Schlüssel",correct:false}]},
- {title:"Der Ruf des Rhabans",desc:"Ein Rabe spricht in Zahlen: 2 – 6 – 12 – 20 – 30 – ?. Die Abstände werden jeweils um zwei größer. Welche Zahl folgt?",options:[
-  {text:"36",correct:false},{text:"40",correct:false},{text:"42",correct:true,move:2},{text:"44",correct:false},{text:"48",correct:false}]},
- {title:"Das Kristallrätsel",desc:"Auf fünf Kristallen stehen die Zahlen 3, 8, 15, 24 und ?. Die Abstände wachsen jeweils um zwei. Welche Zahl fehlt?",options:[
-  {text:"30",correct:false},{text:"32",correct:false},{text:"35",correct:true,move:3},{text:"36",correct:false}]},
- {title:"Die drei verschlossenen Truhen",desc:"A sagt: „Der Schlüssel ist nicht in B.“ B sagt: „Der Schlüssel ist in B.“ C sagt: „Der Schlüssel ist nicht in C.“ Genau eine Aussage ist wahr. Wo liegt der Schlüssel?",options:[
-  {text:"Truhe A",correct:false},{text:"Truhe B",correct:false},{text:"Truhe C",correct:true,move:3},{text:"Keine Truhe",correct:false}]},
- {title:"Die verschlüsselte Botschaft",desc:"Ein Magier verschiebt jeden Buchstaben um einen Platz nach vorn. Die Botschaft lautet TDIBUUFO. Verschiebe jeden Buchstaben um einen Platz zurück. Was steht dort?",options:[
-  {text:"SCHATTEN",correct:true,move:2},{text:"SCHATTENPFAD",correct:false},{text:"SCHATTENLOS",correct:false},{text:"SCHATTENWELT",correct:false}]},
- {title:"Der Wächter der zwei Türen",desc:"Eine Tür ist sicher, die andere tödlich. Ein Wächter lügt immer, der andere sagt stets die Wahrheit. Welche Frage hilft dir, die sichere Tür zu finden?",options:[
-  {text:"Fragen, ob er ehrlich ist.",correct:false},{text:"Fragen, welche Tür der andere Wächter als sicher bezeichnen würde, und dann die andere nehmen.",correct:true,move:2},{text:"Fragen, ob die linke Tür sicher ist.",correct:false},{text:"Fragen, ob beide Türen gefährlich sind.",correct:false}]},
- {title:"Die Waage des Zwergenkönigs",desc:"Neun äußerlich gleiche Münzen liegen vor dir. Eine davon ist schwerer. Du darfst zweimal mit einer Balkenwaage wiegen. Welche Methode findet die schwere Münze garantiert?",options:[
-  {text:"Vier gegen vier wiegen und danach raten.",correct:false},{text:"Drei gegen drei wiegen; danach aus der verdächtigen Dreiergruppe eine gegen eine wiegen.",correct:true,move:3},{text:"Eine gegen eine wiegen und danach raten.",correct:false},{text:"Alle neun Münzen einzeln wiegen.",correct:false},{text:"Fünf gegen vier wiegen und danach beliebig auswählen.",correct:false}]},
- {title:"Die Runen der Ahnen",desc:"Auf einer Steintafel stehen Wolf, Rabe, Wolf, Schlange, Wolf, Rabe, Wolf, ?. Das Muster wiederholt sich. Welches Symbol fehlt?",options:[
-  {text:"Wolf",correct:false},{text:"Rabe",correct:false},{text:"Schlange",correct:true,move:2},{text:"Adler",correct:false}]},
- {title:"Der Beutel des Alchemisten",desc:"In einem Beutel liegen nur rote und blaue Edelsteine. Wie viele musst du im Dunkeln mindestens ziehen, um garantiert zwei Steine derselben Farbe zu besitzen?",options:[
-  {text:"2",correct:false},{text:"3",correct:true,move:2},{text:"4",correct:false},{text:"5",correct:false},{text:"6",correct:false}]},
- {title:"Die Stunde des Mondes",desc:"Eine magische Uhr schlägt sechsmal in genau fünf Sekunden. Wie lange braucht sie bei gleichem Schlagabstand für zwölf Schläge?",options:[
-  {text:"10 Sekunden",correct:false},{text:"11 Sekunden",correct:true,move:2},{text:"12 Sekunden",correct:false},{text:"15 Sekunden",correct:false}]},
- {title:"Die Wächter der Wahrheit",desc:"Drei Wächter behaupten: A: „B lügt.“ B: „C lügt.“ C: „A und B lügen.“ Genau eine Aussage ist wahr. Welche ist wahr?",options:[
-  {text:"Nur A",correct:false},{text:"Nur B",correct:true,move:2},{text:"Nur C",correct:false},{text:"A und C",correct:false}]},
- {title:"Der letzte Zahlenstein",desc:"Die Runen zeigen 1, 2, 6, 24, 120, ?. Jede Zahl entsteht durch Multiplikation mit der nächsten ganzen Zahl. Welche Zahl fehlt?",options:[
-  {text:"240",correct:false},{text:"360",correct:false},{text:"600",correct:false},{text:"720",correct:true,move:3},{text:"840",correct:false}]}
-];
-
+{title:"Das Siegel von MÍRÍNOR",desc:"Vier Wächter besitzen jeweils zwei Schlüssel. Drei Schlüssel sind zerbrochen und ein weiterer ging verloren. Wie viele unversehrte Schlüssel bleiben?",options:[{text:"3 Schlüssel",correct:false},{text:"4 Schlüssel",correct:false},{text:"5 Schlüssel",correct:true,move:2},{text:"6 Schlüssel",correct:false},{text:"7 Schlüssel",correct:false}]},
+{title:"Der Ruf des Rhabans",desc:"Ein Rabe spricht in Zahlen: 2 – 6 – 12 – 20 – 30 – ?. Die Abstände werden jeweils um zwei größer. Welche Zahl folgt?",options:[{text:"36",correct:false},{text:"40",correct:false},{text:"42",correct:true,move:2},{text:"44",correct:false},{text:"48",correct:false}]},
+{title:"Das Kristallrätsel",desc:"Auf fünf Kristallen stehen die Zahlen 3, 8, 15, 24 und ?. Die Abstände wachsen jeweils um zwei. Welche Zahl fehlt?",options:[{text:"30",correct:false},{text:"32",correct:false},{text:"35",correct:true,move:3},{text:"36",correct:false}]},
+{title:"Die drei verschlossenen Truhen",desc:"A sagt: „Der Schlüssel ist nicht in B.“ B sagt: „Der Schlüssel ist in B.“ C sagt: „Der Schlüssel ist nicht in C.“ Genau eine Aussage ist wahr. Wo liegt der Schlüssel?",options:[{text:"Truhe A",correct:false},{text:"Truhe B",correct:false},{text:"Truhe C",correct:true,move:3},{text:"Keine Truhe",correct:false}]},
+{title:"Die verschlüsselte Botschaft",desc:"Ein Magier verschiebt jeden Buchstaben um einen Platz nach vorn. Die Botschaft lautet TDIBUUFO. Verschiebe jeden Buchstaben um einen Platz zurück. Was steht dort?",options:[{text:"SCHATTEN",correct:true,move:2},{text:"SCHATTENPFAD",correct:false},{text:"SCHATTENLOS",correct:false},{text:"SCHATTENWELT",correct:false}]},
+{title:"Der Wächter der zwei Türen",desc:"Eine Tür ist sicher, die andere tödlich. Ein Wächter lügt immer, der andere sagt stets die Wahrheit. Welche Frage hilft dir, die sichere Tür zu finden?",options:[{text:"Fragen, ob er ehrlich ist.",correct:false},{text:"Fragen, welche Tür der andere Wächter als sicher bezeichnen würde, und dann die andere nehmen.",correct:true,move:2},{text:"Fragen, ob die linke Tür sicher ist.",correct:false},{text:"Fragen, ob beide Türen gefährlich sind.",correct:false}]},
+{title:"Die Waage des Zwergenkönigs",desc:"Neun äußerlich gleiche Münzen liegen vor dir. Eine davon ist schwerer. Du darfst zweimal mit einer Balkenwaage wiegen. Welche Methode findet die schwere Münze garantiert?",options:[{text:"Vier gegen vier wiegen und danach raten.",correct:false},{text:"Drei gegen drei wiegen; danach aus der verdächtigen Dreiergruppe eine gegen eine wiegen.",correct:true,move:3},{text:"Eine gegen eine wiegen und danach raten.",correct:false},{text:"Alle neun Münzen einzeln wiegen.",correct:false},{text:"Fünf gegen vier wiegen und danach beliebig auswählen.",correct:false}]},
+{title:"Die Runen der Ahnen",desc:"Auf einer Steintafel stehen Wolf, Rabe, Wolf, Schlange, Wolf, Rabe, Wolf, ?. Das Muster wiederholt sich. Welches Symbol fehlt?",options:[{text:"Wolf",correct:false},{text:"Rabe",correct:false},{text:"Schlange",correct:true,move:2},{text:"Adler",correct:false}]},
+{title:"Der Beutel des Alchemisten",desc:"In einem Beutel liegen nur rote und blaue Edelsteine. Wie viele musst du im Dunkeln mindestens ziehen, um garantiert zwei Steine derselben Farbe zu besitzen?",options:[{text:"2",correct:false},{text:"3",correct:true,move:2},{text:"4",correct:false},{text:"5",correct:false},{text:"6",correct:false}]},
+{title:"Die Stunde des Mondes",desc:"Eine magische Uhr schlägt sechsmal in genau fünf Sekunden. Wie lange braucht sie bei gleichem Schlagabstand für zwölf Schläge?",options:[{text:"10 Sekunden",correct:false},{text:"11 Sekunden",correct:true,move:2},{text:"12 Sekunden",correct:false},{text:"15 Sekunden",correct:false}]},
+{title:"Die Wächter der Wahrheit",desc:"Drei Wächter behaupten: A: „B lügt.“ B: „C lügt.“ C: „A und B lügen.“ Genau eine Aussage ist wahr. Welche ist wahr?",options:[{text:"Nur A",correct:false},{text:"Nur B",correct:true,move:2},{text:"Nur C",correct:false},{text:"A und C",correct:false}]},
+{title:"Der letzte Zahlenstein",desc:"Die Runen zeigen 1, 2, 6, 24, 120, ?. Jede Zahl entsteht durch Multiplikation mit der nächsten ganzen Zahl. Welche Zahl fehlt?",options:[{text:"240",correct:false},{text:"360",correct:false},{text:"600",correct:false},{text:"720",correct:true,move:3},{text:"840",correct:false}]}];
 const pathCoordinates=[];
-function generatePathCoordinates(){
- pathCoordinates.length=0;
- for(let i=1;i<=15;i++){
-  const p=(i-1)/14;
-  pathCoordinates.push({id:i,x:12+p*73,y:82-Math.sin(p*Math.PI)*4});
- }
- for(let i=16;i<=29;i++){
-  const p=(i-16)/13;
-  pathCoordinates.push({id:i,x:86-p*72,y:72-Math.sin(p*Math.PI)*5});
- }
- for(let i=30;i<=45;i++){
-  const p=(i-30)/15;
-  pathCoordinates.push({id:i,x:14+p*72,y:57-Math.sin(p*Math.PI)*4});
- }
- for(let i=46;i<=55;i++){
-  const p=(i-46)/9;
-  pathCoordinates.push({id:i,x:84-p*62,y:42-Math.sin(p*Math.PI)*6});
- }
- for(let i=56;i<=70;i++){
-  const p=(i-56)/14;
-  pathCoordinates.push({id:i,x:22+p*68,y:30-p*15+Math.sin(p*Math.PI*2)*2});
- }
-}
+function generatePathCoordinates(){pathCoordinates.length=0;for(let i=1;i<=15;i++){const p=(i-1)/14;pathCoordinates.push({id:i,x:12+p*73,y:82-Math.sin(p*Math.PI)*4})}for(let i=16;i<=29;i++){const p=(i-16)/13;pathCoordinates.push({id:i,x:86-p*72,y:72-Math.sin(p*Math.PI)*5})}for(let i=30;i<=45;i++){const p=(i-30)/15;pathCoordinates.push({id:i,x:14+p*72,y:57-Math.sin(p*Math.PI)*4})}for(let i=46;i<=55;i++){const p=(i-46)/9;pathCoordinates.push({id:i,x:84-p*62,y:42-Math.sin(p*Math.PI)*6})}for(let i=56;i<=70;i++){const p=(i-56)/14;pathCoordinates.push({id:i,x:22+p*68,y:30-p*15+Math.sin(p*Math.PI*2)*2})}}
 generatePathCoordinates();
-
-function resizeCanvas(){
- const rect=wrapper.getBoundingClientRect();
- if(!rect.width||!rect.height)return;
- const dpr=Math.min(window.devicePixelRatio||1,2);
- canvas.width=Math.max(1,Math.round(rect.width*dpr));
- canvas.height=Math.max(1,Math.round(rect.height*dpr));
- ctx.setTransform(dpr,0,0,dpr,0,0);
- drawBoard();
-}
-
-function drawWanderer(x,y,s){
- ctx.save();ctx.translate(x,y);ctx.fillStyle="#1a1a1a";
- ctx.beginPath();ctx.arc(0,-s*1.2,s*.3,0,Math.PI*2);ctx.fill();
- ctx.fillRect(-s*.3,-s*.9,s*.6,s*.9);
- ctx.fillRect(s*.2,-s*.8,s*.3,s*.6);
- ctx.strokeStyle="#1a1a1a";ctx.lineWidth=2;
- ctx.beginPath();ctx.moveTo(-s*.4,-s*1.1);ctx.lineTo(-s*.6,s*.2);ctx.stroke();
- ctx.restore();
-}
-function drawRaven(x,y,s){
- ctx.save();ctx.translate(x,y);ctx.fillStyle="#1a1a1a";
- ctx.beginPath();ctx.moveTo(0,0);
- ctx.quadraticCurveTo(-s,-s*.5,-s*1.2,0);
- ctx.quadraticCurveTo(-s*.5,s*.2,0,s*.3);
- ctx.quadraticCurveTo(s*.5,s*.2,s*1.2,0);
- ctx.quadraticCurveTo(s,-s*.5,0,0);ctx.fill();ctx.restore();
-}
-function drawTitleBanner(x,y,width){
- ctx.save();ctx.translate(x,y);ctx.fillStyle="#1a1a1a";
- ctx.textAlign="center";ctx.textBaseline="middle";
- ctx.font=`bold ${Math.max(16,width*.08)}px UnifrakturMaguntia,serif`;
- ctx.fillText("Mírínor",0,-width*.04);
- ctx.font=`bold ${Math.max(10,width*.035)}px Cinzel,serif`;
- ctx.fillText("— DIE SCHATTENSCHLUCHT —",0,width*.03);
- ctx.restore();
-}
-
-function drawBoard(){
- const w=wrapper.clientWidth,h=wrapper.clientHeight;
- if(!w||!h)return;
- ctx.clearRect(0,0,w,h);
- ctx.fillStyle="#f5f0e1";ctx.fillRect(0,0,w,h);
-
- ctx.save();ctx.beginPath();
- ctx.moveTo(0,h*.4);ctx.lineTo(w*.1,h*.25);ctx.lineTo(w*.2,h*.38);
- ctx.lineTo(w*.35,h*.15);ctx.lineTo(w*.5,h*.3);ctx.lineTo(w*.7,h*.08);
- ctx.lineTo(w*.85,h*.22);ctx.lineTo(w,h*.1);ctx.lineTo(w,h);
- ctx.lineTo(0,h);ctx.closePath();ctx.clip();
- ctx.fillStyle="#e5dcc5";ctx.fillRect(0,0,w,h);
- ctx.strokeStyle="#a79a7c";ctx.lineWidth=.8;
- for(let i=-h;i<w+h;i+=Math.max(8,w*.015)){
-  ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i+h*.5,h);ctx.stroke();
- }
- ctx.restore();
-
- ctx.strokeStyle="#1a1a1a";ctx.lineWidth=2;ctx.beginPath();
- ctx.moveTo(0,h*.45);ctx.lineTo(w*.12,h*.28);ctx.lineTo(w*.22,h*.42);
- ctx.lineTo(w*.38,h*.18);ctx.lineTo(w*.52,h*.35);ctx.lineTo(w*.72,h*.12);
- ctx.lineTo(w*.88,h*.26);ctx.lineTo(w,h*.15);ctx.stroke();
-
- drawWanderer(w*.08,h*.88,w*.025);
- drawRaven(w*.78,h*.12,w*.03);
- drawRaven(w*.15,h*.32,w*.025);
- drawRaven(w*.65,h*.72,w*.02);
- drawTitleBanner(w*.52,h*.105,w*.45);
-
- ctx.beginPath();ctx.strokeStyle="#332719";
- ctx.lineWidth=Math.max(2,w*.004);ctx.setLineDash([6,5]);
- pathCoordinates.forEach((p,i)=>{
-  const x=p.x*w/100,y=p.y*h/100;
-  if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
- });
- ctx.stroke();ctx.setLineDash([]);
-
- const r=Math.max(8,Math.min(14,w*.014));
- pathCoordinates.forEach(p=>{
-  const x=p.x*w/100,y=p.y*h/100,s=specialFields[p.id];
-  ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);
-  if(p.id===70){
-   ctx.fillStyle="#d4af37";ctx.fill();ctx.lineWidth=3;
-   ctx.strokeStyle="#1a1a1a";ctx.stroke();
-   ctx.fillStyle="#1a1a1a";ctx.font=`bold ${r}px serif`;
-   ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("70",x,y);
-   ctx.beginPath();ctx.arc(x,y,r*1.4,0,Math.PI*2);
-   ctx.strokeStyle="#d4af37";ctx.lineWidth=2;ctx.stroke();
-  }else if(s){
-   ctx.fillStyle="#1a1a1a";ctx.fill();
-   ctx.strokeStyle=s.type==="SAFE"?"#d4af37":"#fff";ctx.lineWidth=2;ctx.stroke();
-   const icons={SAFE:"🛡️",SWAP:"🔄",FORWARD3:"⚡",BACK5:"🌑",BACK10:"🔙"};
-   ctx.font=`${r*1.1}px sans-serif`;ctx.textAlign="center";ctx.textBaseline="middle";
-   ctx.fillText(icons[s.type],x,y+1);
-  }else{
-   ctx.fillStyle="#fff";ctx.fill();ctx.strokeStyle="#1a1a1a";
-   ctx.lineWidth=1.5;ctx.stroke();
-   ctx.fillStyle="#1a1a1a";
-   ctx.font=`bold ${Math.max(8,r*.85)}px Cinzel,serif`;
-   ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(String(p.id),x,y);
-  }
- });
-
- players.forEach((p,i)=>{
-  const pt=pathCoordinates[p.position-1];if(!pt)return;
-  const spread=(i-(players.length-1)/2)*r*.65;
-  const x=pt.x*w/100+spread,y=pt.y*h/100+spread;
-  if(p.active){
-   ctx.beginPath();ctx.arc(x,y,r*1.35,0,Math.PI*2);
-   ctx.strokeStyle="#fff";ctx.lineWidth=2;ctx.stroke();
-  }
-  ctx.beginPath();ctx.arc(x,y,r*1.05,0,Math.PI*2);
-  ctx.fillStyle=p.color+"66";ctx.fill();
-  ctx.beginPath();ctx.arc(x,y,r*.78,0,Math.PI*2);
-  ctx.fillStyle=p.color;ctx.fill();
-  ctx.lineWidth=p.active?2.5:1.5;
-  ctx.strokeStyle=p.active?"#fff":"#4a3416";ctx.stroke();
-  ctx.fillStyle="#21180d";ctx.font=`bold ${Math.max(8,r*.85)}px serif`;
-  ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(String(i+1),x,y);
- });
-}
-
-function updateUI(){
- const p=currentPlayer();
- if(p){
-  document.getElementById("position-display").textContent=`${p.name} · Feld ${p.position}`;
- }
- document.getElementById("player-panels").innerHTML=players.map((pl,i)=>`
-  <div class="player-panel ${i===currentPlayerIndex&&!gameOver?"active":""}">
-   <div class="font-bold truncate" style="color:${pl.color}">
-    <span class="player-dot" style="background:${pl.color}"></span>${pl.name}
-   </div>
-   <div class="text-amber-100 mt-1">Feld ${pl.position} / 70</div>
-   <div class="text-stone-400 text-[10px]">${pl.safe?"🛡️ Schutz aktiv":" "}</div>
-  </div>`).join("");
- drawBoard();
-}
-
-function setStatus(title,desc){
- document.getElementById("status-title").textContent=title;
- document.getElementById("status-desc").textContent=desc;
-}
-
-function clearMovementTimer(){
- if(eventTimer){clearInterval(eventTimer);eventTimer=null}
- if(diceTimer){clearInterval(diceTimer);diceTimer=null}
-}
-
-function startNewGame(count){
- clearMovementTimer();
- selectedPlayerCount=count;
- players=Array.from({length:count},(_,i)=>({
-  name:PLAYER_NAMES[i],position:1,color:COLORS[i],safe:false,active:i===0
- }));
- currentPlayerIndex=0;
- gameStarted=true;gameOver=false;isMoving=false;
- modal.classList.add("hidden");
- modal.dataset.answered="false";
- document.getElementById("start-modal").classList.add("hidden");
- document.getElementById("dice-result").textContent="🎲";
- rollButton.disabled=false;
- setStatus("Abenteuer beginnt!",players[0].name+" beginnt auf Feld 1. Würfle!");
- updateUI();
-}
-
-function rollDice(){
- if(!gameStarted||isMoving||gameOver||!modal.classList.contains("hidden"))return;
- startAudio();rollButton.disabled=true;
- const display=document.getElementById("dice-result");
- let counter=0;
- diceTimer=setInterval(()=>{
-  display.textContent=String(Math.floor(Math.random()*6)+1);
-  counter++;
-  if(counter>=10){
-   clearInterval(diceTimer);diceTimer=null;
-   const result=Math.floor(Math.random()*6)+1;
-   display.textContent=String(result);
-   setStatus(currentPlayer().name+" würfelt!",`Eine ${result}! ${currentPlayer().name} rückt vor.`);
-   movePlayerSteps(result);
-  }
- },70);
-}
-
-function movePlayerSteps(steps){
- if(isMoving)return;
- isMoving=true;
- let remaining=steps;
- eventTimer=setInterval(()=>{
-  const p=currentPlayer();
-  if(!p){clearMovementTimer();isMoving=false;return}
-  if(remaining>0&&p.position<maxPosition){
-   p.position++;remaining--;playStepSound();updateUI();
-  }else{
-   clearInterval(eventTimer);eventTimer=null;isMoving=false;
-   checkTileEvent();
-  }
- },220);
-}
-
-function finishTurn(){
- if(gameOver)return;
- currentPlayerIndex=(currentPlayerIndex+1)%players.length;
- players.forEach((p,i)=>p.active=i===currentPlayerIndex);
- const p=currentPlayer();
- setStatus("Nächster Zug: "+p.name,`${p.name} steht auf Feld ${p.position}. Jetzt würfeln!`);
- updateUI();rollButton.disabled=false;
-}
-
-function checkTileEvent(){
- const p=currentPlayer();if(!p)return;
- updateUI();
-
- if(p.position>=maxPosition){
-  gameOver=true;players.forEach(pl=>pl.active=false);
-  rollButton.disabled=true;playWinSound();
-  showPuzzleModal("Das Final-Tor erreicht!",`${p.name} hat die Schattenschlucht bezwungen und gewinnt das Abenteuer!`,[
-   {text:"Neues Spiel beginnen",correct:true,action:()=>document.getElementById("start-modal").classList.remove("hidden")}
-  ],{victory:true});
-  return;
- }
-
- const spec=specialFields[p.position];
- if(spec){
-  playSpecialSound();
-  if(spec.type==="SAFE"){
-   p.safe=true;
-   setStatus("Sicherer Ort",`${p.name}: ${spec.desc} Schutz vor dem nächsten 5-Felder-Rückschritt.`);
-   finishTurn();return;
-  }
-  if(spec.type==="FORWARD3"){
-   showPuzzleModal(spec.title,spec.desc,[{text:"Geheimen Pfad nehmen: 3 Felder vor",correct:true,move:3}],{event:true});
-   return;
-  }
-  if(spec.type==="BACK5"){
-   if(p.safe){
-    p.safe=false;
-    setStatus("Geschützt!",`${p.name} wird vor dem Rückschritt bewahrt. Der Schutz ist verbraucht.`);
-    finishTurn();
-   }else{
-    showPuzzleModal(spec.title,spec.desc,[{text:"5 Felder zurückgehen",correct:true,move:-5}],{event:true});
-   }
-   return;
-  }
-  if(spec.type==="BACK10"){
-   showPuzzleModal(spec.title,spec.desc,[{text:"10 Felder zurückgehen",correct:true,move:-10}],{event:true});
-   return;
-  }
-  if(spec.type==="SWAP"){
-   showPuzzleModal(spec.title,spec.desc,[{text:`Zu Feld ${spec.target} wechseln`,correct:true,move:spec.target-p.position}],{event:true});
-   return;
-  }
- }
-
- if(Math.random()<.25){
-  const puzzle=lorePuzzles[Math.floor(Math.random()*lorePuzzles.length)];
-  showPuzzleModal(puzzle.title,puzzle.desc,puzzle.options,{event:true});
- }else{
-  setStatus("Feld "+p.position,`${p.name}: Der Pfad ist ruhig. Der nächste Spieler ist an der Reihe.`);
-  finishTurn();
- }
-}
-
-function showPuzzleModal(title,bodyText,options,settings={}){
- const p=currentPlayer();
- document.getElementById("puzzle-category").textContent=p?p.name+" · Prüfung der Schattenschlucht":"Prüfung der Schattenschlucht";
- document.getElementById("puzzle-title").textContent=title;
- document.getElementById("puzzle-body").textContent=bodyText;
- const container=document.getElementById("puzzle-options");
- const feedback=document.getElementById("puzzle-feedback");
- const continueButton=document.getElementById("puzzle-continue");
- container.innerHTML="";feedback.textContent="";
- feedback.classList.add("hidden");continueButton.classList.add("hidden");
-
- options.forEach(opt=>{
-  const button=document.createElement("button");
-  button.type="button";
-  button.className="btn-gothic w-full py-3 px-3 rounded text-sm font-semibold text-left flex justify-between items-center gap-2";
-  const label=document.createElement("span");label.textContent=opt.text;
-  const icon=document.createElement("i");icon.className="fa-solid fa-chevron-right text-xs opacity-70";
-  button.append(label,icon);
-
-  button.addEventListener("click",()=>{
-   if(modal.dataset.answered==="true")return;
-   modal.dataset.answered="true";
-   container.querySelectorAll("button").forEach(b=>b.disabled=true);
-   const player=currentPlayer();
-   let message="";
-
-   if(opt.correct){
-    playSpecialSound();
-    if(opt.move)player.position=Math.max(1,Math.min(maxPosition,player.position+opt.move));
-    message=opt.result||"Richtig! Du hast die Prüfung bestanden.";
-    setStatus("Rätsel gelöst!",player.name+": "+message);
-    feedback.style.color="#24572a";
-   }else{
-    const penalty=Math.floor(Math.random()*5)+3;
-    player.position=Math.max(1,player.position-penalty);
-    player.safe=false;
-    message=`Falsch! ${player.name} fällt ${penalty} Felder zurück.`;
-    setStatus("Falsche Antwort!",message);
-    feedback.style.color="#8b1d1d";
-    playStepSound();
-   }
-
-   feedback.textContent=message;
-   feedback.classList.remove("hidden");
-   updateUI();
-   continueButton.textContent=opt.action?"Spielerauswahl öffnen":(settings.victory?"Spielerauswahl öffnen":"Weiter zum nächsten Zug");
-   continueButton.classList.remove("hidden");
-
-   continueButton.onclick=()=>{
-    modal.classList.add("hidden");
-    modal.dataset.answered="false";
-    if(opt.action){opt.action();return}
-    if(settings.victory){
-     document.getElementById("start-modal").classList.remove("hidden");
-     return;
-    }
-    if(player.position>=maxPosition){
-     gameOver=true;rollButton.disabled=true;playWinSound();
-     showPuzzleModal("Das Final-Tor erreicht!",`${player.name} hat das Abenteuer gewonnen!`,[
-      {text:"Neue Spielrunde",correct:true,action:()=>document.getElementById("start-modal").classList.remove("hidden")}
-     ],{victory:true});
-     return;
-    }
-    finishTurn();
-   };
-  });
-  container.appendChild(button);
- });
-
- modal.dataset.answered="false";
- modal.classList.remove("hidden");
- rollButton.disabled=true;
-}
-
-document.querySelectorAll(".player-choice").forEach(button=>{
- button.addEventListener("click",()=>{
-  selectedPlayerCount=Number(button.dataset.count);
-  document.querySelectorAll(".player-choice").forEach(b=>b.classList.toggle("selected",b===button));
- });
-});
-
-document.getElementById("btn-start-game").addEventListener("click",()=>{
- startAudio();startNewGame(selectedPlayerCount);
-});
-
-document.getElementById("btn-new-game").addEventListener("click",()=>{
- clearMovementTimer();isMoving=false;rollButton.disabled=true;
- modal.classList.add("hidden");
- document.getElementById("start-modal").classList.remove("hidden");
-});
-
+function resizeCanvas(){const rect=wrapper.getBoundingClientRect();if(!rect.width||!rect.height)return;const dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=Math.max(1,Math.round(rect.width*dpr));canvas.height=Math.max(1,Math.round(rect.height*dpr));ctx.setTransform(dpr,0,0,dpr,0,0);drawBoard()}
+function drawWanderer(x,y,s){ctx.save();ctx.translate(x,y);ctx.fillStyle="#1a1a1a";ctx.beginPath();ctx.arc(0,-s*1.2,s*.3,0,Math.PI*2);ctx.fill();ctx.fillRect(-s*.3,-s*.9,s*.6,s*.9);ctx.fillRect(s*.2,-s*.8,s*.3,s*.6);ctx.strokeStyle="#1a1a1a";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-s*.4,-s*1.1);ctx.lineTo(-s*.6,s*.2);ctx.stroke();ctx.restore()}
+function drawRaven(x,y,s){ctx.save();ctx.translate(x,y);ctx.fillStyle="#1a1a1a";ctx.beginPath();ctx.moveTo(0,0);ctx.quadraticCurveTo(-s,-s*.5,-s*1.2,0);ctx.quadraticCurveTo(-s*.5,s*.2,0,s*.3);ctx.quadraticCurveTo(s*.5,s*.2,s*1.2,0);ctx.quadraticCurveTo(s,-s*.5,0,0);ctx.fill();ctx.restore()}
+function drawTitleBanner(x,y,width){ctx.save();ctx.translate(x,y);ctx.fillStyle="#1a1a1a";ctx.textAlign="center";ctx.textBaseline="middle";ctx.font=`bold ${Math.max(16,width*.08)}px UnifrakturMaguntia,serif`;ctx.fillText("Mírínor",0,-width*.04);ctx.font=`bold ${Math.max(10,width*.035)}px Cinzel,serif`;ctx.fillText("— DIE SCHATTENSCHLUCHT —",0,width*.03);ctx.restore()}
+function pointForPosition(pos){if(pos===0)return{x:5,y:91};return pathCoordinates[pos-1]||null}
+function drawBoard(){const w=wrapper.clientWidth,h=wrapper.clientHeight;if(!w||!h)return;ctx.clearRect(0,0,w,h);ctx.fillStyle="#f5f0e1";ctx.fillRect(0,0,w,h);ctx.save();ctx.beginPath();ctx.moveTo(0,h*.4);ctx.lineTo(w*.1,h*.25);ctx.lineTo(w*.2,h*.38);ctx.lineTo(w*.35,h*.15);ctx.lineTo(w*.5,h*.3);ctx.lineTo(w*.7,h*.08);ctx.lineTo(w*.85,h*.22);ctx.lineTo(w,h*.1);ctx.lineTo(w,h);ctx.lineTo(0,h);ctx.closePath();ctx.clip();ctx.fillStyle="#e5dcc5";ctx.fillRect(0,0,w,h);ctx.strokeStyle="#a79a7c";ctx.lineWidth=.8;for(let i=-h;i<w+h;i+=Math.max(8,w*.015)){ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i+h*.5,h);ctx.stroke()}ctx.restore();ctx.strokeStyle="#1a1a1a";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,h*.45);ctx.lineTo(w*.12,h*.28);ctx.lineTo(w*.22,h*.42);ctx.lineTo(w*.38,h*.18);ctx.lineTo(w*.52,h*.35);ctx.lineTo(w*.72,h*.12);ctx.lineTo(w*.88,h*.26);ctx.lineTo(w,h*.15);ctx.stroke();drawWanderer(w*.08,h*.88,w*.025);drawRaven(w*.78,h*.12,w*.03);drawRaven(w*.15,h*.32,w*.025);drawRaven(w*.65,h*.72,w*.02);drawTitleBanner(w*.52,h*.105,w*.45);
+ctx.beginPath();ctx.strokeStyle="#332719";ctx.lineWidth=Math.max(2,w*.004);ctx.setLineDash([6,5]);const start=pointForPosition(0);ctx.moveTo(start.x*w/100,start.y*h/100);pathCoordinates.forEach(p=>ctx.lineTo(p.x*w/100,p.y*h/100));ctx.stroke();ctx.setLineDash([]);
+const r=Math.max(8,Math.min(14,w*.014));const sp=start;ctx.beginPath();ctx.arc(sp.x*w/100,sp.y*h/100,r,0,Math.PI*2);ctx.fillStyle="#6b4b24";ctx.fill();ctx.strokeStyle="#d4af37";ctx.lineWidth=2;ctx.stroke();ctx.fillStyle="#fff4cf";ctx.font=`bold ${Math.max(8,r*.7)}px Cinzel,serif`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("S",sp.x*w/100,sp.y*h/100);
+pathCoordinates.forEach(p=>{const x=p.x*w/100,y=p.y*h/100,s=specialFields[p.id];ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);if(p.id===70){ctx.fillStyle="#d4af37";ctx.fill();ctx.lineWidth=3;ctx.strokeStyle="#1a1a1a";ctx.stroke();ctx.fillStyle="#1a1a1a";ctx.font=`bold ${r}px serif`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("70",x,y);ctx.beginPath();ctx.arc(x,y,r*1.4,0,Math.PI*2);ctx.strokeStyle="#d4af37";ctx.lineWidth=2;ctx.stroke()}else if(s){ctx.fillStyle="#1a1a1a";ctx.fill();ctx.strokeStyle=s.type==="SAFE"?"#d4af37":"#fff";ctx.lineWidth=2;ctx.stroke();const icons={SAFE:"🛡️",SWAP:"🔄",FORWARD3:"⚡",BACK5:"🌑",BACK10:"🔙"};ctx.font=`${r*1.1}px sans-serif`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(icons[s.type],x,y+1)}else{ctx.fillStyle="#fff";ctx.fill();ctx.strokeStyle="#1a1a1a";ctx.lineWidth=1.5;ctx.stroke();ctx.fillStyle="#1a1a1a";ctx.font=`bold ${Math.max(8,r*.85)}px Cinzel,serif`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(String(p.id),x,y)}});
+players.forEach((p,i)=>{const pt=pointForPosition(p.position);if(!pt)return;const spread=(i-(players.length-1)/2)*r*.65,x=pt.x*w/100+spread,y=pt.y*h/100+spread;if(p.active){ctx.beginPath();ctx.arc(x,y,r*1.35,0,Math.PI*2);ctx.strokeStyle="#fff";ctx.lineWidth=2;ctx.stroke()}ctx.beginPath();ctx.arc(x,y,r*1.05,0,Math.PI*2);ctx.fillStyle=p.color+"66";ctx.fill();ctx.beginPath();ctx.arc(x,y,r*.78,0,Math.PI*2);ctx.fillStyle=p.color;ctx.fill();ctx.lineWidth=p.active?2.5:1.5;ctx.strokeStyle=p.active?"#fff":"#4a3416";ctx.stroke();ctx.fillStyle="#21180d";ctx.font=`bold ${Math.max(8,r*.85)}px serif`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(String(i+1),x,y)})}
+function updateUI(){const p=currentPlayer();if(p)document.getElementById("position-display").textContent=`${p.name} · ${p.position===0?"Start":"Feld "+p.position}`;document.getElementById("player-panels").innerHTML=players.map((pl,i)=>`<div class="player-panel ${i===currentPlayerIndex&&!gameOver?"active":""}"><div class="font-bold truncate" style="color:${pl.color}"><span class="player-dot" style="background:${pl.color}"></span>${pl.name}${teamMode?" · Team "+(teamOf(i)===0?"A":"B"):""}</div><div class="text-amber-100 mt-1">${pl.position===0?"Start":"Feld "+pl.position} / 70</div><div class="text-stone-400 text-[10px]">${isShielded(pl)?"🛡️ Schutzfeld":" "}${i===hunterIndex&&!gameOver?" · Jäger":""}</div></div>`).join("");drawBoard()}
+function setStatus(title,desc){document.getElementById("status-title").textContent=title;document.getElementById("status-desc").textContent=desc}
+function clearMovementTimer(){if(eventTimer){clearInterval(eventTimer);eventTimer=null}if(diceTimer){clearInterval(diceTimer);diceTimer=null}}
+function startNewGame(count){clearMovementTimer();selectedPlayerCount=count;teamMode=document.getElementById("team-mode").checked;if(teamMode&&count!==4&&count!==6){teamMode=false;document.getElementById("team-mode").checked=false;setStatus("Teammodus nicht möglich","Bitte wähle 4 Spieler (2 gegen 2) oder 6 Spieler (3 gegen 3).");return}players=Array.from({length:count},(_,i)=>({name:PLAYER_NAMES[i],position:0,color:COLORS[i],active:false}));currentPlayerIndex=Math.floor(Math.random()*players.length);hunterIndex=currentPlayerIndex;players.forEach((p,i)=>p.active=i===currentPlayerIndex);lastOvertakenIndex=null;gameStarted=true;gameOver=false;isMoving=false;modal.classList.add("hidden");modal.dataset.answered="false";document.getElementById("start-modal").classList.add("hidden");document.getElementById("dice-result").textContent="🎲";rollButton.disabled=false;setStatus("Abenteuer beginnt!",players[currentPlayerIndex].name+" beginnt zufällig am Start. Würfle!");updateUI()}
+function rollDice(){if(!gameStarted||isMoving||gameOver||!modal.classList.contains("hidden"))return;startAudio();rollButton.disabled=true;const display=document.getElementById("dice-result");let counter=0;diceTimer=setInterval(()=>{display.textContent=String(Math.floor(Math.random()*6)+1);counter++;if(counter>=10){clearInterval(diceTimer);diceTimer=null;const result=Math.floor(Math.random()*6)+1;display.textContent=String(result);turnStartPositions=players.map(p=>p.position);if(result===6){setStatus(currentPlayer().name+" würfelt eine Sechs!", "Wähle: sechs Felder vorwärts oder eine Figur ein Feld schubsen.");showSixChoice();return}setStatus(currentPlayer().name+" würfelt!",`Eine ${result}!`);movePlayerSteps(result)}},70)}
+function movePlayerSteps(steps){if(isMoving)return;const p=currentPlayer();if(!p)return;if(p.position+steps>maxPosition){setStatus("Zu hoher Wurf",`${p.name} braucht genau ${maxPosition-p.position}. Die Figur bleibt stehen.`);afterAction();return}isMoving=true;let remaining=steps;eventTimer=setInterval(()=>{const pl=currentPlayer();if(!pl){clearMovementTimer();isMoving=false;return}if(remaining>0){pl.position++;remaining--;playStepSound();updateUI()}else{clearInterval(eventTimer);eventTimer=null;isMoving=false;checkTileEvent()}},220)}
+function checkWin(p){if(!p||p.position!==70)return false;gameOver=true;players.forEach(pl=>pl.active=false);rollButton.disabled=true;playWinSound();const winner=teamMode?`Team ${teamOf(players.indexOf(p))===0?"A":"B"}`:p.name;showPuzzleModal("Das Final-Tor erreicht!",`${p.name} hat Feld 70 exakt erreicht. ${winner} gewinnt die Schattenschlucht!`,[{text:"Neues Spiel beginnen",correct:true,action:()=>document.getElementById("start-modal").classList.remove("hidden")}],{victory:true});return true}
+function checkTileEvent(){const p=currentPlayer();if(!p)return;updateUI();if(checkWin(p))return;const spec=specialFields[p.position];if(spec){playSpecialSound();if(spec.type==="SAFE"){setStatus("Sicherer Ort",`${p.name}: ${spec.desc} Solange du hier stehst, bist du vor Schubsen und Tausch geschützt.`);afterAction();return}if(spec.type==="FORWARD3"){showPuzzleModal(spec.title,spec.desc,[{text:"Geheimen Pfad nehmen: 3 Felder vor",correct:true,move:3}],{event:true});return}if(spec.type==="BACK5"){showPuzzleModal(spec.title,spec.desc,[{text:"5 Felder zurückgehen",correct:true,move:-5}],{event:true});return}if(spec.type==="BACK10"){showPuzzleModal(spec.title,spec.desc,[{text:"10 Felder zurückgehen",correct:true,move:-10}],{event:true});return}if(spec.type==="SWAP"){const targets=players.map((q,i)=>({q,i})).filter(({q,i})=>i!==currentPlayerIndex&&(!teamMode||teamOf(i)!==teamOf(currentPlayerIndex))&&!isShielded(q));if(!targets.length){setStatus("Tauschfeld", "Kein ungeschützter gegnerischer Spieler zum Tauschen verfügbar.");afterAction();return}showPuzzleModal(spec.title,spec.desc,targets.map(({q,i})=>({text:`Mit ${q.name} tauschen (Feld ${q.position===0?"Start":q.position})`,correct:true,action:()=>{const me=currentPlayer(),other=players[i];if(isShielded(other)){setStatus("Tausch verhindert","Die gegnerische Figur steht auf einem Schutzfeld.");finishTurn();return}const pos=me.position;me.position=other.position;other.position=pos;updateUI();if(checkWin(me)||checkWin(other))return;afterAction()}})),{specialAction:true});return}}
+if(Math.random()<.25){const puzzle=lorePuzzles[Math.floor(Math.random()*lorePuzzles.length)];showPuzzleModal(puzzle.title,puzzle.desc,puzzle.options,{event:true})}else{setStatus("Feld "+p.position,`${p.name}: Der Pfad ist ruhig.`);afterAction()}}
+function showSixChoice(){const p=currentPlayer();const opts=[{text:"Sechs Felder vorwärts",correct:true,action:()=>{if(p.position+6>70){setStatus("Zu hoher Wurf","Mit sechs Feldern würdest du über Feld 70 hinausgehen. Du bleibst stehen.");afterAction()}else movePlayerSteps(6)}}];players.forEach((target,i)=>{if(i===currentPlayerIndex||isShielded(target))return;opts.push({text:`${target.name} (Feld ${target.position===0?"Start":target.position}) um 1 Feld vorwärts schubsen`,correct:true,action:()=>shove(i,1)});if(target.position>0)opts.push({text:`${target.name} um 1 Feld zurückschubsen`,correct:true,action:()=>shove(i,-1)})});showPuzzleModal("Das Dilemma der Sechs","Eine Sechs gibt keinen Zusatzwurf. Wähle genau eine Möglichkeit. Schutzfelder verhindern jedes Schubsen.",opts,{specialAction:true})}
+function shove(targetIndex,delta){const target=players[targetIndex];if(!target||isShielded(target)){setStatus("Schubsen nicht möglich","Diese Figur steht auf einem Schutzfeld.");afterAction();return}const next=target.position+delta;if(next<0||next>70){setStatus("Schubsen nicht möglich","Die Figur kann nicht über Start oder das Zielfeld hinaus verschoben werden.");afterAction();return}target.position=next;playSpecialSound();updateUI();if(checkWin(target))return;setStatus("Schubsen",`${target.name} wurde ein Feld ${delta>0?"vorwärts":"zurück"} geschoben.`);afterAction()}
+function getHunterIndex(){const min=Math.min(...players.map(p=>p.position));const tied=players.map((p,i)=>({p,i})).filter(x=>x.p.position===min).map(x=>x.i);if(lastOvertakenIndex!==null&&tied.includes(lastOvertakenIndex))return lastOvertakenIndex;if(tied.includes(hunterIndex))return hunterIndex;return tied[0]}
+function afterAction(){if(gameOver)return;const p=currentPlayer();if(!p)return;if(checkWin(p))return;const overtaken=players.map((q,i)=>({q,i})).filter(({q,i})=>i!==currentPlayerIndex&&turnStartPositions[i]!==undefined&&turnStartPositions[i]<=turnStartPositions[currentPlayerIndex]&&q.position<p.position);if(overtaken.length){lastOvertakenIndex=overtaken[overtaken.length-1].i;hunterIndex=getHunterIndex();finishTurn();return}hunterIndex=currentPlayerIndex;players.forEach((q,i)=>q.active=i===currentPlayerIndex);setStatus("Jagdgesetz",`${p.name} ist noch Jäger und darf erneut würfeln, bis mindestens eine andere Figur überholt wurde.`);updateUI();rollButton.disabled=false}
+function finishTurn(){if(gameOver)return;currentPlayerIndex=(currentPlayerIndex+1)%players.length;hunterIndex=getHunterIndex();currentPlayerIndex=hunterIndex;players.forEach((p,i)=>p.active=i===currentPlayerIndex);const p=currentPlayer();setStatus("Nächster Zug: "+p.name,`${p.name} steht auf ${p.position===0?"Start":"Feld "+p.position}. Jetzt würfeln!`);updateUI();rollButton.disabled=false}
+function showPuzzleModal(title,bodyText,options,settings={}){const p=currentPlayer();document.getElementById("puzzle-category").textContent=p?p.name+" · Prüfung der Schattenschlucht":"Prüfung der Schattenschlucht";document.getElementById("puzzle-title").textContent=title;document.getElementById("puzzle-body").textContent=bodyText;const container=document.getElementById("puzzle-options"),feedback=document.getElementById("puzzle-feedback"),continueButton=document.getElementById("puzzle-continue");container.innerHTML="";feedback.textContent="";feedback.classList.add("hidden");continueButton.classList.add("hidden");options.forEach(opt=>{const button=document.createElement("button");button.type="button";button.className="btn-gothic w-full py-3 px-3 rounded text-sm font-semibold text-left flex justify-between items-center gap-2";const label=document.createElement("span");label.textContent=opt.text;const icon=document.createElement("i");icon.className="fa-solid fa-chevron-right text-xs opacity-70";button.append(label,icon);button.addEventListener("click",()=>{if(modal.dataset.answered==="true")return;modal.dataset.answered="true";container.querySelectorAll("button").forEach(b=>b.disabled=true);const player=currentPlayer();let message="";if(opt.correct){playSpecialSound();if(opt.move){const next=player.position+opt.move;player.position=Math.max(0,Math.min(maxPosition,next))}message=opt.result||"Richtig! Du hast die Prüfung bestanden.";setStatus("Rätsel gelöst!",player.name+": "+message);feedback.style.color="#24572a"}else{const penalty=Math.floor(Math.random()*5)+3;player.position=Math.max(0,player.position-penalty);message=`Falsch! ${player.name} fällt ${penalty} Felder zurück.`;setStatus("Falsche Antwort!",message);feedback.style.color="#8b1d1d";playStepSound()}feedback.textContent=message;feedback.classList.remove("hidden");updateUI();continueButton.textContent=opt.action?"Auswahl bestätigen":(settings.victory?"Spielerauswahl öffnen":"Weiter");continueButton.classList.remove("hidden");continueButton.onclick=()=>{modal.classList.add("hidden");modal.dataset.answered="false";if(opt.action){opt.action();return}if(settings.victory){document.getElementById("start-modal").classList.remove("hidden");return}if(checkWin(player))return;if(settings.specialAction){afterAction();return}if(settings.event&&player.position>0&&specialFields[player.position]?.type==="SAFE"){setStatus("Schutzfeld",`${player.name} steht auf einem Schutzfeld.`)}afterAction()}});container.appendChild(button)});modal.dataset.answered="false";modal.classList.remove("hidden");rollButton.disabled=true}
+document.querySelectorAll(".player-choice").forEach(button=>button.addEventListener("click",()=>{selectedPlayerCount=Number(button.dataset.count);document.querySelectorAll(".player-choice").forEach(b=>b.classList.toggle("selected",b===button))}));
+document.getElementById("btn-start-game").addEventListener("click",()=>{startAudio();startNewGame(selectedPlayerCount)});
+document.getElementById("btn-new-game").addEventListener("click",()=>{clearMovementTimer();isMoving=false;rollButton.disabled=true;modal.classList.add("hidden");document.getElementById("start-modal").classList.remove("hidden")});
 rollButton.addEventListener("click",rollDice);
-document.getElementById("btn-open-rules").addEventListener("click",()=>document.getElementById("rules-modal").classList.remove("hidden"));
-document.getElementById("btn-close-rules").addEventListener("click",()=>document.getElementById("rules-modal").classList.add("hidden"));
-document.getElementById("btn-open-impressum").addEventListener("click",()=>document.getElementById("impressum-modal").classList.remove("hidden"));
-document.getElementById("btn-close-impressum").addEventListener("click",()=>document.getElementById("impressum-modal").classList.add("hidden"));
-document.getElementById("btn-zoom-reset").addEventListener("click",resizeCanvas);
-
-["rules-modal","impressum-modal"].forEach(id=>{
- const el=document.getElementById(id);
- el.addEventListener("click",e=>{if(e.target===el)el.classList.add("hidden")});
-});
-
-let resizeFrame=null;
-function scheduleResize(){
- if(resizeFrame!==null)cancelAnimationFrame(resizeFrame);
- resizeFrame=requestAnimationFrame(()=>{resizeFrame=null;resizeCanvas()});
-}
-window.addEventListener("resize",scheduleResize);
-window.addEventListener("orientationchange",()=>setTimeout(scheduleResize,180));
-if(window.visualViewport)window.visualViewport.addEventListener("resize",scheduleResize);
-if(document.fonts&&document.fonts.ready)document.fonts.ready.then(scheduleResize);
-
-resizeCanvas();
-updateUI();
+document.getElementById("btn-open-rules").addEventListener("click",()=>document.getElementById("rules-modal").classList.remove("hidden"));document.getElementById("btn-close-rules").addEventListener("click",()=>document.getElementById("rules-modal").classList.add("hidden"));document.getElementById("btn-open-impressum").addEventListener("click",()=>document.getElementById("impressum-modal").classList.remove("hidden"));document.getElementById("btn-close-impressum").addEventListener("click",()=>document.getElementById("impressum-modal").classList.add("hidden"));document.getElementById("btn-zoom-reset").addEventListener("click",resizeCanvas);
+["rules-modal","impressum-modal"].forEach(id=>{const el=document.getElementById(id);el.addEventListener("click",e=>{if(e.target===el)el.classList.add("hidden")})});
+let resizeFrame=null;function scheduleResize(){if(resizeFrame!==null)cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(()=>{resizeFrame=null;resizeCanvas()})}
+window.addEventListener("resize",scheduleResize);window.addEventListener("orientationchange",()=>setTimeout(scheduleResize,180));if(window.visualViewport)window.visualViewport.addEventListener("resize",scheduleResize);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(scheduleResize);resizeCanvas();updateUI();
 </script>
 </body>
 </html>
