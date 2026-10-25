@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>MÍRÍNOR – Die Schattenschlucht</title>
+  <style>
+    :root {
+      --bg-dark: #0d0a08;
+      --bg-card: #18120c;
+      --paper: #2a1f14;
+      --paper-light: #3d2d1d;
+      --gold: #d4af37;
+      --gold-light: #f3e5ab;
+      --gold-dim: #8a7322;
+      --crimson: #a82323;
+      --shadow-purple: #4a2c58;
+      --text-main: #e8d8c8;
+      --text-muted: #a69585;
+      --border-gold: #5c4813;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Georgia', serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 50% 10%, #241428 0%, transparent 60%),
+        radial-gradient(circle at 50% 90%, #1a0f07 0%, transparent 80%);
+    }
+
+    #app-container {
+      width: 100%;
+      max-width: 480px;
+      height: 100vh;
+      max-height: 900px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      box-shadow: 0 0 30px rgba(0,0,0,0.8), 0 0 15px rgba(212, 175, 55, 0.15);
+      overflow: hidden;
+    }
+
+    header {
+      background: linear-gradient(180deg, #1c140a 0%, #0d0a08 100%);
+      padding: 12px 16px;
+      text-align: center;
+      border-bottom: 2px solid var(--border-gold);
+      position: relative;
+      z-index: 10;
+    }
+
+    h1 {
+      font-size: 1.25rem;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+      margin-bottom: 2px;
+    }
+
+    .subtitle {
+      font-size: 0.7rem;
+      color: var(--gold-light);
+      font-style: italic;
+      letter-spacing: 0.5px;
+      opacity: 0.9;
+    }
+
+    .credits-head {
+      font-size: 0.62rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+      line-height: 1.2;
+    }
+
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 6px 12px;
+      margin-top: 6px;
+      border-radius: 4px;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      font-size: 0.75rem;
+    }
+
+    .status-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .status-val {
+      color: var(--gold-light);
+      font-weight: bold;
+    }
+
+    /* MAP CONTAINER */
+    #map-view {
+      flex: 1;
+      position: relative;
+      background: #140d07;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #map-canvas {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .map-overlay {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      right: 10px;
+      background: rgba(20, 14, 9, 0.85);
+      border: 1px solid var(--border-gold);
+      padding: 8px 12px;
+      border-radius: 6px;
+      backdrop-filter: blur(4px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 5;
+    }
+
+    .location-info h3 {
+      font-size: 0.85rem;
+      color: var(--gold);
+    }
+
+    .location-info p {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .btn-action {
+      background: linear-gradient(180deg, #a8792a 0%, #5c4113 100%);
+      color: #fff;
+      border: 1px solid var(--gold-light);
+      padding: 8px 14px;
+      font-family: inherit;
+      font-size: 0.75rem;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+      transition: all 0.2s;
+    }
+
+    .btn-action:active {
+      transform: scale(0.95);
+      background: linear-gradient(180deg, #5c4113 0%, #a8792a 100%);
+    }
+
+    /* PUZZLE CONTAINER */
+    #puzzle-view {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(13, 10, 8, 0.95);
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+      backdrop-filter: blur(8px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    #puzzle-view.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .puzzle-header {
+      text-align: center;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--border-gold);
+      padding-bottom: 8px;
+    }
+
+    .puzzle-title {
+      color: var(--gold);
+      font-size: 1.1rem;
+      margin-bottom: 4px;
+    }
+
+    .puzzle-desc {
+      font-size: 0.8rem;
+      color: var(--text-main);
+      line-height: 1.3;
+    }
+
+    .puzzle-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      margin: 10px 0;
+    }
+
+    /* PUZZLE SPECIFICS */
+    .rune-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      width: 100%;
+      max-width: 320px;
+    }
+
+    .rune-btn {
+      aspect-ratio: 1;
+      background: var(--paper);
+      border: 1px solid var(--border-gold);
+      border-radius: 8px;
+      color: var(--gold-light);
+      font-size: 1.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+      transition: all 0.2s;
+    }
+
+    .rune-btn.selected {
+      border-color: var(--gold);
+      background: var(--paper-light);
+      box-shadow: 0 0 12px var(--gold-dim);
+    }
+
+    .sequence-display {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+      min-height: 40px;
+      align-items: center;
+    }
+
+    .seq-slot {
+      width: 36px;
+      height: 36px;
+      border: 1px dashed var(--border-gold);
+      border-radius: 4px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.2rem;
+      color: var(--gold);
+      background: rgba(0,0,0,0.3);
+    }
+
+    .dial-container {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .dial-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 2px solid var(--border-gold);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .dial-outer {
+      width: 180px;
+      height: 180px;
+      border-color: var(--gold-dim);
+    }
+
+    .dial-inner {
+      width: 110px;
+      height: 110px;
+      border-color: var(--gold);
+    }
+
+    .dial-center {
+      width: 50px;
+      height: 50px;
+      background: var(--paper);
+      border-radius: 50%;
+      border: 2px solid var(--gold-light);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.2rem;
+    }
+
+    .dial-mark {
+      position: absolute;
+      font-size: 1rem;
+      color: var(--gold-light);
+    }
+
+    .path-choice-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .path-opt-btn {
+      background: var(--paper);
+      border: 1px solid var(--border-gold);
+      padding: 12px;
+      border-radius: 6px;
+      color: var(--text-main);
+      text-align: left;
+      font-family: inherit;
+      font-size: 0.8rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .path-opt-btn:active {
+      background: var(--paper-light);
+    }
+
+    .puzzle-controls {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: var(--text-muted);
+      flex: 1;
+      padding: 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.75rem;
+    }
+
+    .btn-submit {
+      background: linear-gradient(180deg, #a8792a 0%, #5c4113 100%);
+      border: 1px solid var(--gold);
+      color: #fff;
+      flex: 2;
+      padding: 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    /* MODAL OVERLAYS */
+    .modal {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      z-index: 30;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+
+    .modal.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content {
+      background: var(--paper);
+      border: 2px solid var(--border-gold);
+      border-radius: 8px;
+      padding: 16px;
+      max-height: 80vh;
+      overflow-y: auto;
+      color: var(--text-main);
+      font-size: 0.8rem;
+      line-height: 1.4;
+      width: 100%;
+    }
+
+    .modal-content h2 {
+      color: var(--gold);
+      font-size: 1rem;
+      margin-bottom: 8px;
+      border-bottom: 1px solid var(--border-gold);
+      padding-bottom: 4px;
+    }
+
+    .modal-content p {
+      margin-bottom: 8px;
+    }
+
+    .modal-close {
+      margin-top: 12px;
+      width: 100%;
+    }
+
+    footer {
+      background: #0d0a08;
+      border-top: 1px solid var(--border-gold);
+      padding: 8px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      z-index: 10;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 12px;
+    }
+
+    .footer-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 0.65rem;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .footer-btn:hover {
+      color: var(--gold);
+    }
+
+    .copyright {
+      font-size: 0.6rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    .ai-disclaimer {
+      font-size: 0.55rem;
+      color: rgba(166, 149, 133, 0.6);
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    /* STORY DIALOG */
+    .story-box {
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid var(--border-gold);
+      padding: 8px 10px;
+      border-radius: 4px;
+      font-style: italic;
+      font-size: 0.75rem;
+      color: var(--gold-light);
+      margin-bottom: 8px;
+    }
+
+    /* FEEDBACK ANIMATION */
+    @keyframes pulse-success {
+      0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); }
+      70% { box-shadow: 0 0 0 15px rgba(74, 222, 128, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+    }
+
+    @keyframes pulse-error {
+      0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+      70% { box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
+
+    .flash-success { animation: pulse-success 0.6s ease-out; }
+    .flash-error { animation: pulse-error 0.6s ease-out; }
+  </style>
+</head>
+<body>
+
+  <div id="app-container">
+    <!-- HEADER -->
+    <header>
+      <h1>MÍRÍNOR</h1>
+      <div class="subtitle">Die Schattenschlucht – Das Rätselspiel</div>
+      <div class="credits-head">
+        Nach dem gleichnamigen Roman von Marc Blankenhagen<br>
+        Umgesetzt von Blankenhagen Spieleentwicklung
+      </div>
+      
+      <div class="status-bar">
+        <div class="status-item">
+          <span>Position:</span>
+          <span id="pos-val" class="status-val">Feld 1 / 70</span>
+        </div>
+        <div class="status-item">
+          <span>Schutz:</span>
+          <span id="shield-val" class="status-val">🛡️ Aktiv</span>
+        </div>
+        <div class="status-item">
+          <span>Station:</span>
+          <span id="station-val" class="status-val">1 / 5</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAP VIEW -->
+    <div id="map-view">
+      <canvas id="map-canvas"></canvas>
+      
+      <div class="map-overlay">
+        <div class="location-info">
+          <h3 id="loc-title">Der Nebelpass</h3>
+          <p id="loc-sub">Erreiche Feld 12 für die nächste Prüfung</p>
+        </div>
+        <button id="btn-interact" class="btn-action">Rätsel Öffnen</button>
+      </div>
+    </div>
+
+    <!-- PUZZLE VIEW -->
+    <div id="puzzle-view">
+      <div class="puzzle-header">
+        <div id="puzzle-title" class="puzzle-title">Prüfung des Nebels</div>
+        <div class="story-box" id="puzzle-story">
+          "Der dichte Nebel verhüllt den Pfad. Nur wer die Ordnung der Schattensymbole erkennt, findet den sicheren Tritt."
+        </div>
+        <div id="puzzle-desc" class="puzzle-desc">
+          Bringe die Elemente in die magische Reihenfolge: Feuer → Schatten → Licht → Wind
+        </div>
+      </div>
+
+      <div id="puzzle-body" class="puzzle-body">
+        <!-- Dynamic puzzle elements rendered here -->
+      </div>
+
+      <div class="puzzle-controls">
+        <button id="btn-reset-puzzle" class="btn-secondary">Zurücksetzen</button>
+        <button id="btn-submit-puzzle" class="btn-submit">Prüfen</button>
+      </div>
+    </div>
+
+    <!-- REGELN MODAL -->
+    <div id="rules-modal" class="modal">
+      <div class="modal-content">
+        <h2>Spielregeln & Mechaniken</h2>
+        <p><strong>Ziel:</strong> Durchquere die Schattenschlucht von Feld 1 bis zum Heiligtum auf Feld 70 durch das Lösen der Buch-Rätsel an den 5 Schlüsselstationen.</p>
+        <p><strong>Stationen & Rätsel:</strong> Erreichst du eine Station, musst du das Lore-Rätsel lösen, um weiterzuziehen.</p>
+        <p><strong>Schutzschild-Felder (🛡️):</strong> Weiße Felder und Schutzbereiche gewähren dir Immunität gegen Schattenstöße.</p>
+        <p><strong>Sprint (+3 ⚡):</strong> Löst du ein Rätsel fehlerfrei, erhältst du einen Sprintbonus vorwärts.</p>
+        <p><strong>Setback (-5 🌑):</strong> Scheiterst du an einem Rätsel ohne aktiven Schutzschild, wirst du von den Schatten zurückgeworfen.</p>
+        <button class="btn-action modal-close" onclick="toggleModal('rules-modal', false)">Schließen</button>
+      </div>
+    </div>
+
+    <!-- IMPRESSUM MODAL -->
+    <div id="impressum-modal" class="modal">
+      <div class="modal-content">
+        <h2>Impressum</h2>
+        <p><strong>Blankenhagen Spieleentwicklung</strong></p>
+        <p>Jörg Blankenhagen</p>
+        <p>Kanalstraße 31</p>
+        <p>73614 Schorndorf</p>
+        <p>E-Mail: <a href="mailto:spieleentwicklung@freenet.de" style="color:var(--gold);">spieleentwicklung@freenet.de</a></p>
+        <br>
+        <p><strong>Vorlagen-Hinweis:</strong><br>
+        Basiert auf dem Roman „MÍRÍNOR – Die Schattenschlucht“ von Marc Blankenhagen.</p>
+        <button class="btn-action modal-close" onclick="toggleModal('impressum-modal', false)">Schließen</button>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-links">
+        <button class="footer-btn" onclick="toggleModal('rules-modal', true)">Regeln</button>
+        <span style="color:var(--border-gold)">•</span>
+        <button class="footer-btn" onclick="toggleModal('impressum-modal', true)">Impressum</button>
+      </div>
+      <div class="copyright">
+        Ein Spiel nach dem gleichnamigen Roman von Marc Blankenhagen.<br>Umgesetzt von Blankenhagen Spieleentwicklung.
+      </div>
+      <div class="ai-disclaimer">
+        Dieser Text/Dieses Bild/Dieses Video/… wurde unter Zuhilfenahme einer Künstlichen Intelligenz erstellt und von einem Menschen überprüft.
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // --- GAME STATE & DATA ---
+    const STATE = {
+      position: 1,
+      maxPosition: 70,
+      currentStation: 0,
+      hasShield: true,
+      selectedSequence: [],
+      dialOuterAngle: 90,
+      dialInnerAngle: 180,
+      selectedChoice: undefined,
+      selectedMath: []
+    };
+
+    const STATIONS = [
+      {
+        id: 0,
+        field: 12,
+        name: "Der Nebelpass",
+        title: "1. Das Tor der Elemente",
+        story: '"Die Tore von Míor sind versiegelt. Nur wer die Ur-Elemente nach dem Gesetz der Schattenschlucht reiht, darf eintreten."',
+        desc: "Wähle die Symbole in korrekter Folge: 🔥 Feuer, 🌑 Schatten, ☀️ Licht, 🌬️ Wind",
+        type: "sequence",
+        solution: ["🔥", "🌑", "☀️", "🌬️"],
+        options: ["☀️", "🔥", "🌬️", "🌑", "⚡", "💧"]
+      },
+      {
+        id: 1,
+        field: 25,
+        name: "Flüsternde Ruinen",
+        title: "2. Pfad der Stimmen",
+        story: '"Echos alter Geister verführen Wanderer in den Abgrund. Welcher Inschrift wirst du vertrauen?"',
+        desc: "Wähle den Pfad, der dem Gesetz des Schildes folgt:",
+        type: "choice",
+        options: [
+          { text: "Dem Pfad des roten Lichts in die Felsspalte folgen", correct: false },
+          { text: "Dem Wappen des weißen Schutzschildes an den Ruinen folgen", correct: true },
+          { text: "Direkt durch den dunklen Talgrund marschieren", correct: false }
+        ]
+      },
+      {
+        id: 2,
+        field: 40,
+        name: "Runentor von Míor",
+        title: "3. Ausrichtung des Siegels",
+        story: '"Zwei magische Ringe halten den Verschluss des Schattentors. Richte die Nord-Runen aus."',
+        desc: "Klicke auf die Ringe, bis beide Führungssymbole (ᛏ) genau nach Oben zeigen.",
+        type: "dials",
+        targetOuter: 0,
+        targetInner: 0
+      },
+      {
+        id: 3,
+        field: 55,
+        name: "Kristallhöhle",
+        title: "4. Resonanz der Schatten",
+        story: '"Die Dunkelkristalle schwingen in alter Magie. Bringe die Wellen ins Gleichgewicht."',
+        desc: "Stimme die Kristalle ab: Erreiche genau die Summe 70 durch Aktivierung der Runen.",
+        type: "math",
+        target: 70,
+        values: [25, 15, 30, 10, 5, 20]
+      },
+      {
+        id: 4,
+        field: 70,
+        name: "Heiligtum am Abgrund",
+        title: "5. Das Schicksal von Mírínor",
+        story: '"Das Finale liegt vor dir. Schließe den Zirkel der Schattenschlucht."',
+        desc: "Setze das fehlende Wort der Prophezeiung ein: 'Im Schatten liegt der _____, im Schilde das Leben.'",
+        type: "choice",
+        options: [
+          { text: "Sieg", correct: false },
+          { text: "Schutz", correct: true },
+          { text: "Schatz", correct: false }
+        ]
+      }
+    ];
+
+    // --- CANVAS MAP SYSTEM ---
+    const canvas = document.getElementById('map-canvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+      drawMap();
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+
+    function getFieldCoordinates(index) {
+      const w = canvas.width - 60;
+      const h = canvas.height - 80;
+      const rows = 8;
+      const cols = 5;
+      
+      const row = Math.floor((index - 1) / cols);
+      const col = (index - 1) % cols;
+      
+      const actualCol = (row % 2 === 0) ? col : (cols - 1 - col);
+      
+      const x = 30 + (actualCol / (cols - 1)) * w;
+      const y = h + 30 - (row / (rows - 1)) * h;
+      
+      return { x, y };
+    }
+
+    function drawMap() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#140d07';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Path line
+      ctx.beginPath();
+      ctx.strokeStyle = '#4a371c';
+      ctx.lineWidth = 4;
+      for (let i = 1; i <= STATE.maxPosition; i++) {
+        const pt = getFieldCoordinates(i);
+        if (i === 1) ctx.moveTo(pt.x, pt.y);
+        else ctx.lineTo(pt.x, pt.y);
+      }
+      ctx.stroke();
+
+      // Fields
+      for (let i = 1; i <= STATE.maxPosition; i++) {
+        const pt = getFieldCoordinates(i);
+        const isStation = STATIONS.some(s => s.field === i);
+        const isPassed = i <= STATE.position;
+        const isCurrent = i === STATE.position;
+
+        ctx.beginPath();
+        ctx.arc(pt.x, pt.y, isStation ? 12 : 7, 0, Math.PI * 2);
+
+        if (isCurrent) {
+          ctx.fillStyle = '#f3e5ab';
+          ctx.shadowColor = '#d4af37';
+          ctx.shadowBlur = 12;
+        } else if (isPassed) {
+          ctx.fillStyle = '#8a7322';
+          ctx.shadowBlur = 0;
+        } else if (isStation) {
+          ctx.fillStyle = '#a82323';
+          ctx.shadowBlur = 0;
+        } else {
+          ctx.fillStyle = '#2a1f14';
+          ctx.shadowBlur = 0;
+        }
+
+        ctx.fill();
+        ctx.strokeStyle = '#5c4813';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+
+        if (isCurrent) {
+          ctx.beginPath();
+          ctx.arc(pt.x, pt.y, 16, 0, Math.PI * 2);
+          ctx.strokeStyle = '#d4af37';
+          ctx.lineWidth = 2;
+          ctx.stroke();
+        }
+      }
+    }
+
+    // --- UI UPDATES ---
+    function updateUI() {
+      document.getElementById('pos-val').innerText = `Feld ${STATE.position} / ${STATE.maxPosition}`;
+      document.getElementById('shield-val').innerText = STATE.hasShield ? '🛡️ Aktiv' : '❌ Inaktiv';
+      document.getElementById('station-val').innerText = `${STATE.currentStation + 1} / ${STATIONS.length}`;
+
+      const currSt = STATIONS[STATE.currentStation];
+      if (currSt) {
+        document.getElementById('loc-title').innerText = currSt.name;
+        document.getElementById('loc-sub').innerText = STATE.position >= currSt.field 
+          ? 'Bereit für die Prüfung!' 
+          : `Rücke vor bis Feld ${currSt.field}`;
+        
+        const btn = document.getElementById('btn-interact');
+        if (STATE.position >= currSt.field) {
+          btn.innerText = "Rätsel Lösen";
+          btn.style.opacity = "1";
+          btn.style.pointerEvents = "auto";
+        } else {
+          btn.innerText = "Voranschreiten";
+          btn.style.opacity = "0.8";
+        }
+      }
+
+      drawMap();
+    }
+
+    // --- PUZZLE BUILDER ---
+    function openPuzzle() {
+      const st = STATIONS[STATE.currentStation];
+      if (!st) return;
+
+      document.getElementById('puzzle-title').innerText = st.title;
+      document.getElementById('puzzle-story').innerText = st.story;
+      document.getElementById('puzzle-desc').innerText = st.desc;
+
+      const body = document.getElementById('puzzle-body');
+      body.innerHTML = '';
+
+      if (st.type === 'sequence') {
+        STATE.selectedSequence = [];
+        
+        const slotContainer = document.createElement('div');
+        slotContainer.className = 'sequence-display';
+        for (let i = 0; i < st.solution.length; i++) {
+          const slot = document.createElement('div');
+          slot.className = 'seq-slot';
+          slot.id = `seq-slot-${i}`;
+          slotContainer.appendChild(slot);
+        }
+        body.appendChild(slotContainer);
+
+        const grid = document.createElement('div');
+        grid.className = 'rune-grid';
+        st.options.forEach(symbol => {
+          const btn = document.createElement('button');
+          btn.className = 'rune-btn';
+          btn.innerText = symbol;
+          btn.onclick = () => {
+            if (STATE.selectedSequence.length < st.solution.length) {
+              STATE.selectedSequence.push(symbol);
+              renderSequenceSlots();
+            }
+          };
+          grid.appendChild(btn);
+        });
+        body.appendChild(grid);
+
+      } else if (st.type === 'choice') {
+        STATE.selectedChoice = undefined;
+        const grid = document.createElement('div');
+        grid.className = 'path-choice-grid';
+        st.options.forEach((opt, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'path-opt-btn';
+          btn.innerHTML = `<span style="color:var(--gold)">✦</span> ${opt.text}`;
+          btn.onclick = () => {
+            document.querySelectorAll('.path-opt-btn').forEach(b => b.style.borderColor = 'var(--border-gold)');
+            btn.style.borderColor = 'var(--gold)';
+            STATE.selectedChoice = idx;
+          };
+          grid.appendChild(btn);
+        });
+        body.appendChild(grid);
+
+      } else if (st.type === 'dials') {
+        STATE.dialOuterAngle = 90;
+        STATE.dialInnerAngle = 180;
+
+        const dialBox = document.createElement('div');
+        dialBox.className = 'dial-container';
+
+        const outer = document.createElement('div');
+        outer.className = 'dial-ring dial-outer';
+        outer.innerHTML = '<div class="dial-mark" style="top:5px">ᛏ</div>';
+        outer.style.transform = `rotate(${STATE.dialOuterAngle}deg)`;
+        outer.onclick = () => {
+          STATE.dialOuterAngle = (STATE.dialOuterAngle + 90) % 360;
+          outer.style.transform = `rotate(${STATE.dialOuterAngle}deg)`;
+        };
+
+        const inner = document.createElement('div');
+        inner.className = 'dial-ring dial-inner';
+        inner.innerHTML = '<div class="dial-mark" style="top:5px">ᛏ</div>';
+        inner.style.transform = `rotate(${STATE.dialInnerAngle}deg)`;
+        inner.onclick = (e) => {
+          e.stopPropagation();
+          STATE.dialInnerAngle = (STATE.dialInnerAngle + 90) % 360;
+          inner.style.transform = `rotate(${STATE.dialInnerAngle}deg)`;
+        };
+
+        const center = document.createElement('div');
+        center.className = 'dial-center';
+        center.innerText = '🛡️';
+
+        dialBox.appendChild(outer);
+        dialBox.appendChild(inner);
+        dialBox.appendChild(center);
+        body.appendChild(dialBox);
+
+      } else if (st.type === 'math') {
+        STATE.selectedMath = [];
+        const container = document.createElement('div');
+        container.style.display = 'flex';
+        container.style.flexDirection = 'column';
+        container.style.alignItems = 'center';
+        container.style.gap = '12px';
+
+        const sumVal = document.createElement('div');
+        sumVal.id = 'math-sum';
+        sumVal.style.fontSize = '1.2rem';
+        sumVal.style.color = 'var(--gold-light)';
+        sumVal.innerText = 'Summe: 0 / ' + st.target;
+        container.appendChild(sumVal);
+
+        const grid = document.createElement('div');
+        grid.className = 'rune-grid';
+        st.values.forEach(val => {
+          const btn = document.createElement('button');
+          btn.className = 'rune-btn';
+          btn.style.fontSize = '1rem';
+          btn.innerText = val;
+          btn.onclick = () => {
+            btn.classList.toggle('selected');
+            if (STATE.selectedMath.includes(val)) {
+              STATE.selectedMath = STATE.selectedMath.filter(v => v !== val);
+            } else {
+              STATE.selectedMath.push(val);
+            }
+            const currentSum = STATE.selectedMath.reduce((a,b) => a+b, 0);
+            sumVal.innerText = `Summe: ${currentSum} / ${st.target}`;
+          };
+          grid.appendChild(btn);
+        });
+        container.appendChild(grid);
+        body.appendChild(container);
+      }
+
+      document.getElementById('puzzle-view').classList.add('active');
+    }
+
+    function renderSequenceSlots() {
+      const st = STATIONS[STATE.currentStation];
+      for (let i = 0; i < st.solution.length; i++) {
+        const slot = document.getElementById(`seq-slot-${i}`);
+        if (slot) {
+          slot.innerText = STATE.selectedSequence[i] || '';
+        }
+      }
+    }
+
+    // --- PUZZLE VERIFICATION ---
+    function checkPuzzle() {
+      const st = STATIONS[STATE.currentStation];
+      let success = false;
+
+      if (st.type === 'sequence') {
+        success = JSON.stringify(STATE.selectedSequence) === JSON.stringify(st.solution);
+      } else if (st.type === 'choice') {
+        success = STATE.selectedChoice !== undefined && st.options[STATE.selectedChoice].correct;
+      } else if (st.type === 'dials') {
+        success = (STATE.dialOuterAngle % 360 === 0) && (STATE.dialInnerAngle % 360 === 0);
+      } else if (st.type === 'math') {
+        const sum = (STATE.selectedMath || []).reduce((a,b) => a+b, 0);
+        success = sum === st.target;
+      }
+
+      const pView = document.getElementById('puzzle-view');
+
+      if (success) {
+        pView.classList.add('flash-success');
+        setTimeout(() => pView.classList.remove('flash-success'), 600);
+
+        setTimeout(() => {
+          document.getElementById('puzzle-view').classList.remove('active');
+          STATE.position = Math.min(STATE.maxPosition, STATE.position + 3);
+          if (STATE.currentStation < STATIONS.length - 1) {
+            STATE.currentStation++;
+          } else {
+            alert("Gratulation! Du hast MÍRÍNOR – Die Schattenschlucht erfolgreich durchquert!");
+          }
+          updateUI();
+        }, 500);
+
+      } else {
+        pView.classList.add('flash-error');
+        setTimeout(() => pView.classList.remove('flash-error'), 600);
+
+        if (!STATE.hasShield) {
+          STATE.position = Math.max(1, STATE.position - 5);
+        } else {
+          STATE.hasShield = false;
+        }
+        updateUI();
+      }
+    }
+
+    // --- EVENT LISTENERS ---
+    document.getElementById('btn-interact').onclick = () => {
+      const currSt = STATIONS[STATE.currentStation];
+      if (STATE.position >= currSt.field) {
+        openPuzzle();
+      } else {
+        STATE.position = Math.min(currSt.field, STATE.position + 2);
+        updateUI();
+      }
+    };
+
+    document.getElementById('btn-submit-puzzle').onclick = checkPuzzle;
+
+    document.getElementById('btn-reset-puzzle').onclick = () => {
+      openPuzzle();
+    };
+
+    function toggleModal(id, show) {
+      const modal = document.getElementById(id);
+      if (show) modal.classList.add('active');
+      else modal.classList.remove('active');
+    }
+
+    // --- INIT ---
+    window.onload = () => {
+      resizeCanvas();
+      updateUI();
+    };
+  </script>
+</body>
+</html>
